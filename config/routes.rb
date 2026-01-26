@@ -1,13 +1,29 @@
 Rails.application.routes.draw do
+  root "pages#home"
+
   devise_for :users
-  root to: "pages#home"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  resources :trips do
+    member do
+      post :generate        # create itinerary_days + activities + transport options
+      post :confirm        # user confirms final plan
+      get  :export          # PDF export
+    end
 
-  # Defines the root path route ("/")
-  # root "posts#index"
-  resources :trips, only: [:index, :new, :create, :show]
+    # Preferences adjustment
+    resource :trip_preferences, only: [:create, :update] # itinerary_days → activities #transport_options
+
+
+
+    # Read-only after generation
+    resources :itinerary_days, only: [:index, :show] do
+      resources :activities, only: [:create, :update, :destroy]
+    end
+
+
+    # Transport options comparison
+    resources :transport_options, only: [:index, :show]
+  end
+
+	  resources :activities, only: [:destroy]
 end
