@@ -1,2 +1,94 @@
-<h1>Trips#show</h1>
-<p>Find me in app/views/trips/show.html.erb</p>
+<div class="rw-container rw-trip-show">
+  <h1 class="rw-trip-title">Your trip to “<%= @trip.city %>”</h1>
+
+  <div class="rw-trip-grid">
+    <!-- SUMMARY -->
+    <section class="rw-card">
+      <h3 class="rw-card-title">Summary</h3>
+
+      <ul class="rw-list">
+        <li><strong>From:</strong> <%= @trip.departure %></li>
+        <li><strong>Dates:</strong> <%= @trip.start_date %> → <%= @trip.end_date %></li>
+        <li><strong>People:</strong> <%= @trip.people %></li>
+        <li><strong>Preferences:</strong> <%= @trip.preferences.pluck(:name).join(", ").presence || "—" %></li>
+      </ul>
+
+      <div class="rw-card-actions">
+        <button class="rw-btn rw-btn--secondary" data-action="click->modal#open">
+          Adjust Preferences
+        </button>
+      </div>
+    </section>
+
+    <!-- TRANSPORTATION -->
+    <section class="rw-card">
+      <h3 class="rw-card-title">Transportation</h3>
+
+      <% if @transport_options.any? %>
+        <div class="rw-transport-list">
+          <% @transport_options.each do |t| %>
+            <div class="rw-transport-item">
+              <div class="rw-transport-mode"><%= t.mode.to_s.upcase %></div>
+
+              <div class="rw-muted">
+                <%= t.duration_minutes %> min •
+                €<%= (t.price_cents.to_i / 100.0) %> •
+                <%= t.co2_kg %> kg CO₂
+              </div>
+
+              <div class="rw-muted"><%= t.summary %></div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="rw-muted">Transport options will appear here after generation.</p>
+      <% end %>
+    </section>
+  </div>
+
+  <h2 class="rw-section-title">Your itinerary in “<%= @trip.city %>”</h2>
+
+  <% if @days.any? %>
+    <div class="rw-days">
+      <% @days.each do |day| %>
+        <section class="rw-card">
+          <div class="rw-day-header">
+            <span>Day <%= day.day_number %></span>
+            <span><%= day.date %></span>
+          </div>
+
+          <% if day.activities.any? %>
+            <div class="rw-activities">
+              <% day.activities.each do |a| %>
+                <div class="rw-activity">
+                  <div class="rw-activity-title">
+                    <%= a.starts_at&.strftime("%H:%M") %> - <%= a.title %>
+                  </div>
+                  <div class="rw-muted"><%= a.location %></div>
+                  <ul class="rw-list">
+                    <li><%= a.details %></li>
+                  </ul>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="rw-muted rw-space-top">Activities will appear here.</p>
+          <% end %>
+
+          <div class="rw-map-placeholder">Google Map</div>
+        </section>
+      <% end %>
+    </div>
+  <% else %>
+    <section class="rw-card">
+      <p class="rw-muted">Your itinerary will appear here after generation.</p>
+    </section>
+  <% end %>
+
+  <div class="rw-page-actions">
+    <%= button_to "Save", save_trip_path(@trip), method: :patch, class: "rw-btn rw-btn--primary" %>
+    <%= button_to "Export", export_trip_path(@trip), method: :get, class: "rw-btn rw-btn--secondary" %>
+  </div>
+</div>
+
+<%= render "preferences_modal", trip: @trip, all_preferences: @all_preferences %>

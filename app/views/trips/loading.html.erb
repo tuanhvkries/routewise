@@ -1,2 +1,13 @@
-<h1>Trips#loading</h1>
-<p>Find me in app/views/trips/loading.html.erb</p>
+<div class="rw-container">
+  <div class="rw-loading">
+    <div>
+      <h1>One sec, we are planning your trip ...</h1>
+      <p class="rw-muted">This page will redirect automatically once your plan is ready.</p>
+      <p class="rw-muted">(For now, you can manually refresh or go back to “My Trips”.)</p>
+
+      <div style="margin-top:18px;">
+        <%= link_to "Back to My Trips", trips_path, class: "rw-btn rw-btn--secondary" %>
+      </div>
+    </div>
+  </div>
+</div>
