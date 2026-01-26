@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get 'trips/index'
+  get 'trips/new'
+  get 'trips/create'
+  get 'trips/show'
+  get 'trips/loading'
   root "pages#home"
 
   devise_for :users
