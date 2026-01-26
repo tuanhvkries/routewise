@@ -51,7 +51,6 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 
 gem "devise"
-gem "dotenv-rails", groups: [:development, :test]
 
 gem "wicked_pdf"
 gem "wkhtmltopdf-binary"

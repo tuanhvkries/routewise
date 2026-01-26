@@ -1,0 +1,191 @@
+.rw-trip-show {
+  padding-top: 10px;
+}
+
+/* titles */
+.rw-trip-title {
+  font-size: 44px;
+  font-weight: 800;
+  margin: 12px 0 18px;
+}
+
+.rw-section-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 22px 0 12px;
+}
+
+/* grid */
+.rw-trip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+/* card */
+.rw-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px 20px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+}
+
+.rw-card-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 10px;
+}
+
+/* list */
+.rw-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.rw-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  font-size: 14px;
+}
+
+.rw-list li:last-child {
+  border-bottom: 0;
+}
+
+/* muted text */
+.rw-muted {
+  color: rgba(0,0,0,0.65);
+  font-size: 14px;
+}
+
+.rw-space-top {
+  margin-top: 12px;
+}
+
+/* transport */
+.rw-transport-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rw-transport-item {
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.rw-transport-item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.rw-transport-mode {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* day header + activities */
+.rw-day-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.rw-activities {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.rw-activity-title {
+  font-weight: 800;
+}
+
+/* map placeholder */
+.rw-map-placeholder {
+  margin-top: 14px;
+  height: 170px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: rgba(0,0,0,0.45);
+}
+
+/* buttons */
+.rw-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  height: 40px;
+  padding: 0 22px;
+  border-radius: 9999px;
+
+  font-weight: 700;
+  font-size: 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.rw-btn--primary {
+  background: #0b0b0b;
+  color: #fff;
+  border: 2px solid #0b0b0b;
+}
+
+.rw-btn--primary:hover {
+  opacity: 0.92;
+}
+
+.rw-btn--secondary {
+  background: transparent;
+  color: #0b0b0b;
+  border: 2px solid #0b0b0b;
+}
+
+.rw-btn--secondary:hover {
+  background: rgba(0,0,0,0.06);
+}
+
+.rw-card-actions {
+  margin-top: 14px;
+}
+
+/* button_to forms inline */
+.rw-page-actions form,
+.rw-card-actions form {
+  display: inline;
+  margin: 0;
+}
+
+/* bottom actions */
+.rw-page-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .rw-trip-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rw-trip-title {
+    font-size: 34px;
+  }
+}

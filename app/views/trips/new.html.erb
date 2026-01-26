@@ -1,2 +1,65 @@
-<h1>Trips#new</h1>
-<p>Find me in app/views/trips/new.html.erb</p>
+<div class="rw-trips-new">
+  <h1 class="rw-title">Plan your trip</h1>
+
+  <%= form_with model: @trip, class: "rw-form" do |f| %>
+    <div class="rw-grid">
+      <!-- LEFT COLUMN -->
+      <div class="rw-col">
+        <div class="rw-field">
+          <%= f.label :destination, "Location", class: "rw-label" %>
+          <%= f.text_field :destination, placeholder: "City", class: "rw-input" %>
+        </div>
+
+        <div class="rw-field">
+          <%= f.label :departure_city, "Departure:", class: "rw-label" %>
+          <%= f.text_field :departure_city, placeholder: "City", class: "rw-input" %>
+        </div>
+
+        <div class="rw-field">
+          <span class="rw-label">Travel Dates</span>
+          <div class="rw-row">
+            <%= f.date_field :start_date, class: "rw-input", placeholder: "Start" %>
+            <%= f.date_field :end_date, class: "rw-input", placeholder: "End" %>
+          </div>
+        </div>
+
+        <div class="rw-field">
+          <%= f.label :budget, "Budget:", class: "rw-label" %>
+          <%= f.text_field :budget, placeholder: "2000 EUR", class: "rw-input" %>
+        </div>
+
+        <div class="rw-field">
+          <%= f.label :people, "People:", class: "rw-label" %>
+          <%= f.select :people, (1..10), {}, class: "rw-select" %>
+        </div>
+
+        <%= f.submit "Submit", class: "rw-submit" %>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="rw-col">
+        <div class="rw-field">
+          <span class="rw-label">Preferences</span>
+          <span class="rw-help">Choose your preferences</span>
+
+          <div class="rw-checks">
+            <% %w[Art Sport Museum Food Architecture Wellness Walking Relaxing Action Party].each do |pref| %>
+              <label class="rw-check">
+                <%= check_box_tag "trip[preferences][]", pref, false, class: "rw-checkbox" %>
+                <span><%= pref %></span>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="rw-field">
+          <span class="rw-label">Further preferences</span>
+          <%= f.text_area :notes,
+                placeholder: "put all your further preferences here",
+                rows: 6,
+                class: "rw-textarea" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

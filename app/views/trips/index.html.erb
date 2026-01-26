@@ -1,2 +1,33 @@
-<h1>Trips#index</h1>
-<p>Find me in app/views/trips/index.html.erb</p>
+<div class="rw-container rw-my-trips">
+  <h1 class="rw-my-trips-title">My Trips</h1>
+
+  <% if @trips.any? %>
+    <div class="rw-trip-list">
+      <% @trips.each do |trip| %>
+        <div class="rw-trip-card">
+          <div class="rw-trip-destination"><%= trip.city %></div>
+
+          <div class="rw-trip-dates">
+            <%= trip.start_date %> → <%= trip.end_date %>
+          </div>
+
+          <div class="rw-trip-actions">
+            <%= button_to "Open",
+                          trip_path(trip),
+                          method: :get,
+                          class: "rw-trip-open rw-nav-button" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="rw-trip-card">
+      <p class="rw-trip-empty">No trips yet.</p>
+
+      <%= button_to "Plan your first trip",
+                    new_trip_path,
+                    method: :get,
+                    class: "rw-trip-open rw-nav-button" %>
+    </div>
+  <% end %>
+</div>

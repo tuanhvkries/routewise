@@ -1,19 +1,18 @@
-<div class="rw-container">
-  <header class="rw-topbar">
-    <div class="rw-brand">RouteWise</div>
-    <nav class="rw-links">
-      <% if user_signed_in? %>
-        <%= link_to "My Trips", trips_path, class: "rw-link" %>
-        <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "rw-link" %>
-      <% else %>
-        <%= link_to "Sign up", new_user_registration_path, class: "rw-link" %>
-        <%= link_to "Log in", new_user_session_path, class: "rw-link" %>
-      <% end %>
-    </nav>
-  </header>
+<div class="rw-container rw-home">
+  <section class="rw-hero">
+    <h1 class="rw-hero-title">
+      Plan your trip in the most effective and environmentally friendly way
+    </h1>
 
-  <main class="rw-hero">
-    <h1>Plan your trip in the most effective and environmentally friendly</h1>
-    <%= link_to "Plan your trip", new_trip_path, class: "rw-btn rw-btn--primary" %>
-  </main>
+    <p class="rw-hero-subtitle">
+      Personalized itineraries + clear CO₂ impact for every travel option.
+    </p>
+
+    <div class="rw-hero-actions">
+      <%= button_to "Plan your trip",
+                    new_trip_path,
+                    method: :get,
+                    class: "rw-btn rw-btn--primary" %>
+    </div>
+  </section>
 </div>

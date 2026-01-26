@@ -1,0 +1,28 @@
+<div class="rw-modal" data-controller="modal" data-modal-target="container">
+  <div class="rw-modal__backdrop" data-action="click->modal#close"></div>
+
+  <div class="rw-modal__panel">
+    <h3>Adjust Preferences</h3>
+
+    <%= form_with url: update_preferences_trip_path(trip), method: :patch do %>
+      <div class="rw-chips" style="margin-top:12px;">
+        <% all_preferences.each do |pref| %>
+          <label class="rw-chip">
+            <%= check_box_tag "trip[preference_ids][]", pref.id, trip.preference_ids.include?(pref.id) %>
+            <span><%= pref.name %></span>
+          </label>
+        <% end %>
+      </div>
+
+      <div class="rw-field">
+        <label>Further preferences</label>
+        <%= text_area_tag "trip[further_preferences]", trip.further_preferences, class: "rw-input", rows: 3 %>
+      </div>
+
+      <div class="rw-actions">
+        <button type="button" class="rw-btn rw-btn--secondary" data-action="click->modal#close">Cancel</button>
+        <button type="submit" class="rw-btn rw-btn--primary">Regenerate</button>
+      </div>
+    <% end %>
+  </div>
+</div>

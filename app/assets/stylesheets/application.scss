@@ -10,3 +10,12 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+/* GLOBAL PAGE CONTAINER */
+.rw-container {
+  max-width: 980px;        /* same as navbar pill */
+  margin: 0 auto;          /* center page */
+  padding-left: 18px;      /* horizontal spacing */
+  padding-right: 18px;
+  padding-top: 30px;
+}

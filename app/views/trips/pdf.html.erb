@@ -1,0 +1,27 @@
+<h1>Your trip to “<%= @trip.city %>”</h1>
+<p><%= @trip.start_date %> → <%= @trip.end_date %> • People: <%= @trip.people %></p>
+
+<h2>Transportation</h2>
+<ul>
+  <% @trip.transport_options.each do |t| %>
+    <li>
+      <%= t.mode.to_s.upcase %> —
+      <%= t.duration_minutes %> min —
+      €<%= (t.price_cents.to_i / 100.0) %> —
+      <%= t.co2_kg %> kg CO₂
+    </li>
+  <% end %>
+</ul>
+
+<h2>Itinerary</h2>
+<% @trip.itinerary_days.order(:day_number).each do |day| %>
+  <h3>Day <%= day.day_number %> — <%= day.date %></h3>
+
+  <% day.activities.each do |a| %>
+    <p>
+      <strong><%= a.starts_at&.strftime("%H:%M") %> - <%= a.title %></strong><br>
+      <%= a.location %><br>
+      <%= a.details %>
+    </p>
+  <% end %>
+<% end %>

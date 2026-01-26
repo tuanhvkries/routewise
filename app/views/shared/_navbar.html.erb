@@ -1,0 +1,64 @@
+<header class="rw-nav-wrap">
+  <div class="rw-nav-pill">
+    <div class="rw-nav-left">
+      <%= button_to root_path,
+                    method: :get,
+                    class: "rw-brand rw-brand-button" do %>
+        <span class="rw-brand-name">RouteWise</span>
+        <span class="rw-brand-tagline">Smart, Sustainable Travel</span>
+      <% end %>
+    </div>
+
+    <div class="rw-nav-right">
+      <% if user_signed_in? %>
+        <div class="rw-nav-actions">
+          <%= button_to "My trips",
+                        trips_path,
+                        method: :get,
+                        class: "rw-nav-primary rw-nav-button" %>
+
+          <%= button_to "Plan a trip",
+                        new_trip_path,
+                        method: :get,
+                        class: "rw-nav-primary rw-nav-button" %>
+
+          <div class="rw-avatar">
+            <button class="rw-avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false">
+              <span class="rw-avatar-icon">👤</span>
+            </button>
+
+            <div class="rw-avatar-menu" role="menu" aria-label="User menu">
+              <%= button_to "My trips",
+                            trips_path,
+                            method: :get,
+                            class: "rw-nav-primary rw-nav-button" %>
+
+              <%= button_to "Logout",
+                            destroy_user_session_path,
+                            method: :delete,
+                            class: "rw-nav-primary rw-nav-button" %>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="rw-nav-actions">
+          <%= button_to "Sign up",
+                        new_user_registration_path,
+                        method: :get,
+                        class: "rw-nav-outline rw-nav-button" %>
+
+          <%= button_to "Log in",
+                        new_user_session_path,
+                        method: :get,
+                        class: "rw-nav-outline rw-nav-button" %>
+
+          <button class="rw-avatar-btn rw-avatar-btn--ghost"
+                  type="button"
+                  aria-label="User">
+            <span class="rw-avatar-icon">👤</span>
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</header>
