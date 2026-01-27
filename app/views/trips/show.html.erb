@@ -1,4 +1,4 @@
-<div class="rw-container rw-trip-show">
+<div class="rw-container rw-trip-show" data-controller="modal">
   <h1 class="rw-trip-title">Your trip to “<%= @trip.city %>”</h1>
 
   <div class="rw-trip-grid">
@@ -86,9 +86,15 @@
   <% end %>
 
   <div class="rw-page-actions">
-    <%= button_to "Save", save_trip_path(@trip), method: :patch, class: "rw-btn rw-btn--primary" %>
-    <%= button_to "Export", export_trip_path(@trip), method: :get, class: "rw-btn rw-btn--secondary" %>
+    <%= button_to "Save",
+              save_trip_path(@trip),
+              method: :patch,
+              class: "rw-btn rw-btn--primary",
+              data: { turbo: false } %>
+    <%= link_to "Export",
+            export_trip_path(@trip),
+            class: "rw-btn rw-btn--secondary",
+            data: { turbo: false } %>
   </div>
+  <%= render "preferences_modal", trip: @trip, all_preferences: @all_preferences %>
 </div>
-
-<%= render "preferences_modal", trip: @trip, all_preferences: @all_preferences %>

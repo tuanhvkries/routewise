@@ -1,8 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["container"]
+  static targets = ["dialog"]
 
-  open() { this.containerTarget.classList.add("is-open") }
-  close() { this.containerTarget.classList.remove("is-open") }
+  open() {
+    this.dialogTarget.classList.remove("is-hidden")
+  }
+
+  close() {
+    this.dialogTarget.classList.add("is-hidden")
+  }
 }
