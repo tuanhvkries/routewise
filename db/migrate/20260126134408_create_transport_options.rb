@@ -4,7 +4,7 @@ class CreateTransportOptions < ActiveRecord::Migration[7.1]
       t.references :trip, null: false, foreign_key: true
       t.string :mode
       t.integer :duration_minutes
-      t.integer :price_cents
+      t.integer :price
       t.float :co2_kg
       t.text :summary
 

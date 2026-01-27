@@ -49,7 +49,7 @@ trip = Trip.create!(
   departure: "Paris",
   start_date: Date.today + 14,
   end_date: Date.today + 16,
-  budget: 60000,
+  budget: 4000,
   people: 2,
   further_preferences: "We like food markets and walking, no night clubs",
   status: "ready"
@@ -65,7 +65,7 @@ TransportOption.create!(
   trip: trip,
   mode: "train",
   duration_minutes: 390,
-  price_cents: 6500,
+  price: 65,
   co2_kg: 12.3,
   summary: "Comfortable, low-carbon option with city-center arrival"
 )
@@ -74,7 +74,7 @@ TransportOption.create!(
   trip: trip,
   mode: "plane",
   duration_minutes: 120,
-  price_cents: 9000,
+  price: 90,
   co2_kg: 95.0,
   summary: "Fastest option but higher carbon footprint"
 )
