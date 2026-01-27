@@ -1,10 +1,10 @@
-<div class="rw-modal" data-controller="modal" data-modal-target="container">
+<div class="rw-modal is-hidden" data-modal-target="dialog">
   <div class="rw-modal__backdrop" data-action="click->modal#close"></div>
 
   <div class="rw-modal__panel">
     <h3>Adjust Preferences</h3>
 
-    <%= form_with url: update_preferences_trip_path(trip), method: :patch do %>
+    <%= form_with url: update_preferences_trip_path(trip), method: :patch, data: { turbo: false } do %>
       <div class="rw-chips" style="margin-top:12px;">
         <% all_preferences.each do |pref| %>
           <label class="rw-chip">

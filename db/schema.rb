@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_27_133234) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_27_155311) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,15 +23,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_27_133234) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["itinerary_day_id"], name: "index_activities_on_itinerary_day_id"
-  end
-
-  create_table "days", force: :cascade do |t|
-    t.bigint "trip_id", null: false
-    t.integer "day_number"
-    t.date "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["trip_id"], name: "index_days_on_trip_id"
   end
 
   create_table "itinerary_days", force: :cascade do |t|
@@ -98,7 +89,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_27_133234) do
   end
 
   add_foreign_key "activities", "itinerary_days"
-  add_foreign_key "days", "trips"
   add_foreign_key "itinerary_days", "trips"
   add_foreign_key "transport_options", "trips"
   add_foreign_key "trip_preferences", "preferences"

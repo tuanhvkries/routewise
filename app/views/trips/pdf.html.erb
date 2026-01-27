@@ -17,7 +17,7 @@
 <% @trip.itinerary_days.order(:day_number).each do |day| %>
   <h3>Day <%= day.day_number %> — <%= day.date %></h3>
 
-  <% day.activities.each do |a| %>
+  <% day.activities.order(:starts_at).each do |a| %>
     <p>
       <strong><%= a.starts_at&.strftime("%H:%M") %> - <%= a.title %></strong><br>
       <%= a.location %><br>

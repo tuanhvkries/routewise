@@ -10,11 +10,18 @@ class Trip < ApplicationRecord
 
   validates :city, :departure, :start_date, :end_date, presence: true
 
-  enum status: { generating: "generating", ready: "ready", failed: "failed" }
+  enum status: {
+    draft: "draft",
+    generating: "generating",
+    ready: "ready",
+    failed: "failed"
+  }
 
-  class Trip < ApplicationRecord
-    after_initialize do
-      self.status ||= "draft"
-    end
+  after_initialize :set_default_status, if: :new_record?
+
+  private
+
+  def set_default_status
+    self.status ||= "draft"
   end
 end

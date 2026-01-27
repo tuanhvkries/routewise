@@ -23,8 +23,6 @@ class TripsController < ApplicationController
     @trip.status = "generating"
 
     if @trip.save
-      @trip.preference_ids = params[:trip][:preference_ids].reject(&:blank?)
-
       generate_and_persist_plan!(@trip)
 
       @trip.update!(status: "ready")
@@ -36,6 +34,9 @@ class TripsController < ApplicationController
   rescue JSON::ParserError
     @trip.update!(status: "failed") if @trip&.persisted?
     redirect_to new_trip_path, alert: "AI returned invalid data. Please try again."
+  rescue RubyLLM::RateLimitError, RubyLLM::ServerError, RubyLLM::ServiceUnavailableError, Faraday::TimeoutError, Faraday::ConnectionFailed
+    @trip.update!(status: "failed") if @trip&.persisted?
+    redirect_to new_trip_path, alert: "AI service is busy right now. Please try again."
   end
 
   def show
@@ -44,8 +45,7 @@ class TripsController < ApplicationController
     @all_preferences = Preference.order(:name)
   end
 
-  def loading
-  end
+  def loading; end
 
   def status
     render json: { status: @trip.status }
@@ -53,8 +53,8 @@ class TripsController < ApplicationController
 
   def update_preferences
     @trip.update!(
-      further_preferences: params[:trip][:further_preferences],
-      preference_ids: params[:trip][:preference_ids]
+      further_preferences: params.dig(:trip, :further_preferences),
+      preference_ids: preference_ids_from_params
     )
 
     @trip.update!(status: "generating")
@@ -66,6 +66,9 @@ class TripsController < ApplicationController
   rescue JSON::ParserError
     @trip.update!(status: "failed")
     redirect_to trip_path(@trip), alert: "AI returned invalid data. Please try again."
+  rescue RubyLLM::RateLimitError, RubyLLM::ServerError, RubyLLM::ServiceUnavailableError, Faraday::TimeoutError, Faraday::ConnectionFailed
+    @trip.update!(status: "failed")
+    redirect_to trip_path(@trip), alert: "AI service is busy right now. Please try again."
   end
 
   def save
@@ -73,10 +76,21 @@ class TripsController < ApplicationController
   end
 
   def export
-    pdf = WickedPdf.new.pdf_from_string(
-      render_to_string("trips/pdf", layout: "pdf")
+    html = render_to_string(
+      template: "trips/pdf",
+      layout: "pdf"
     )
-    send_data pdf, filename: "routewise-#{@trip.city}.pdf"
+
+    pdf = WickedPdf.new.pdf_from_string(
+      html,
+      encoding: "UTF-8",
+      enable_local_file_access: true
+    )
+
+    send_data pdf,
+              filename: "routewise-#{@trip.city.parameterize}.pdf",
+              type: "application/pdf",
+              disposition: "attachment"
   end
 
   private
@@ -88,11 +102,14 @@ class TripsController < ApplicationController
   def trip_params
     params.require(:trip).permit(
       :city, :departure, :start_date, :end_date,
-      :budget, :people, :further_preferences
+      :budget, :people, :further_preferences,
+      preference_ids: []
     )
   end
 
-  # context + instructions
+  def preference_ids_from_params
+    Array(params.dig(:trip, :preference_ids)).reject(&:blank?)
+  end
 
   def trip_context(trip)
     prefs = trip.preferences.pluck(:name).join(", ").presence || "none"
@@ -137,13 +154,9 @@ class TripsController < ApplicationController
     PROMPT
   end
 
-  # ask LLM + persist output
-
   def generate_and_persist_plan!(trip)
-    ruby_llm_chat = RubyLLM.chat(model: "openai/gpt-5")
-    response = ruby_llm_chat.with_instructions(instructions(trip)).ask(user_prompt(trip))
-
-    data = JSON.parse(extract_json(response.content))
+    raw = ask_llm_for_plan!(trip)
+    data = JSON.parse(extract_json(raw))
 
     ActiveRecord::Base.transaction do
       trip.transport_options.destroy_all
@@ -153,7 +166,7 @@ class TripsController < ApplicationController
         trip.transport_options.create!(
           mode: t["mode"],
           duration_minutes: t["duration_minutes"],
-          price: t["price"],
+          price: t["price"].to_i,
           co2_kg: t["co2_kg"],
           summary: t["summary"]
         )
@@ -174,6 +187,34 @@ class TripsController < ApplicationController
           )
         end
       end
+    end
+  end
+
+  def ask_llm_for_plan!(trip)
+    with_llm_retries do
+      chat = RubyLLM.chat
+      response =
+        chat
+          .with_instructions(instructions(trip))
+          .ask(user_prompt(trip))
+
+      response.content.to_s
+    end
+  end
+
+  def with_llm_retries(max_attempts: 4, base_sleep: 1.0)
+    attempt = 0
+
+    begin
+      attempt += 1
+      yield
+    rescue RubyLLM::RateLimitError, RubyLLM::ServiceUnavailableError, RubyLLM::ServerError, Faraday::TimeoutError, Faraday::ConnectionFailed => e
+      raise if attempt >= max_attempts
+
+      sleep_for = (base_sleep * (2**(attempt - 1))) + rand * 0.25
+      Rails.logger.warn("[TripsController] LLM retry #{attempt}/#{max_attempts} after #{e.class}: sleeping #{sleep_for.round(2)}s")
+      sleep(sleep_for)
+      retry
     end
   end
 
