@@ -1,21 +1,22 @@
 /* outer spacing */
 .rw-footer-wrap {
-  margin: 48px auto 24px;
+  margin: 120px auto 32px; /* space like Figma */
   padding: 0 18px;
 }
 
-/* pill container */
+/* pill container (aligned with navbar) */
 .rw-footer-pill {
-  max-width: 980px;
+  max-width: 980px; /* EXACT same as navbar */
   margin: 0 auto;
-  padding: 18px 22px;
+  height: 74px; /* match navbar height */
+  padding: 0 18px 0 22px; /* match navbar padding */
 
   background: #dfeee8;
   border-radius: 999px;
 
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
 
   box-shadow:
     0 12px 26px rgba(0,0,0,0.06),
@@ -24,6 +25,7 @@
 
 /* TOP ROW */
 .rw-footer-top {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,7 +38,13 @@
 /* copyright */
 .rw-footer-copy {
   font-weight: 600;
-  white-space: nowrap;
+}
+
+/* right side (links + icon) */
+.rw-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 /* links */
@@ -44,7 +52,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  white-space: nowrap;
+  flex-wrap: wrap;
 }
 
 .rw-footer-link {
@@ -57,21 +65,48 @@
   text-decoration: underline;
 }
 
-/* BOTTOM ROW */
+.rw-footer-sep {
+  opacity: 0.5;
+}
+
+/* LinkedIn button */
+.rw-footer-social {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.12);
+
+  display: grid;
+  place-items: center;
+
+  text-decoration: none;
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* bottom text */
 .rw-footer-bottom {
+  max-width: 980px;
+  margin: 14px auto 0;
+  padding: 0 22px;
+
+  text-align: center;
   font-size: 12px;
-  color: rgba(0,0,0,0.6);
+  color: rgba(0,0,0,0.55);
 }
 
 /* responsive */
 @media (max-width: 900px) {
+  .rw-footer-pill {
+    height: auto;
+    padding: 14px 16px;
+    border-radius: 24px;
+  }
+
   .rw-footer-top {
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
-  }
-
-  .rw-footer-links {
-    flex-wrap: wrap;
+    gap: 10px;
   }
 }
