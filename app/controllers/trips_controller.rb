@@ -1,6 +1,6 @@
 class TripsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_trip, only: %i[show loading status update_preferences save export]
+  before_action :set_trip, only: %i[show edit update loading status update_preferences save export]
 
   SYSTEM_PROMPT = <<~PROMPT
     You are a travel planning assistant.
@@ -38,6 +38,28 @@ class TripsController < ApplicationController
   rescue RubyLLM::RateLimitError, RubyLLM::ServerError, RubyLLM::ServiceUnavailableError, Faraday::TimeoutError, Faraday::ConnectionFailed
     @trip.update!(status: "failed") if @trip&.persisted?
     redirect_to new_trip_path, alert: "AI service is busy right now. Please try again."
+  end
+
+  def edit
+    @preferences = Preference.order(:name)
+  end
+
+  def update
+    if @trip.update(trip_params)
+      @trip.update!(status: "generating")
+      generate_and_persist_plan!(@trip)
+      @trip.update!(status: "ready")
+      redirect_to trip_path(@trip)
+    else
+      @preferences = Preference.order(:name)
+      render :edit, status: :unprocessable_entity
+    end
+  rescue JSON::ParserError
+    @trip.update!(status: "failed")
+    redirect_to trip_path(@trip), alert: "AI returned invalid data. Please try again."
+  rescue RubyLLM::RateLimitError, RubyLLM::ServerError, RubyLLM::ServiceUnavailableError, Faraday::TimeoutError, Faraday::ConnectionFailed
+    @trip.update!(status: "failed")
+    redirect_to trip_path(@trip), alert: "AI service is busy right now. Please try again."
   end
 
   def show
