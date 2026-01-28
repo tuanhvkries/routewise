@@ -46,7 +46,7 @@
     </section>
   </div>
 
-  <h2 class="rw-section-title">Your itinerary in “<%= @trip.city %>”</h2>
+  <h2 class="rw-section-title">Your itinerary in "<%= @trip.city %>"</h2>
 
   <% if @days.any? %>
     <div class="rw-days">
@@ -71,11 +71,18 @@
                 </div>
               <% end %>
             </div>
+
+            <% day_markers = day.activities.select { |a| a.latitude.present? && a.longitude.present? }.map { |a| { title: a.title, location: a.location, lat: a.latitude, lng: a.longitude } } %>
+            <% if day_markers.any? %>
+              <div class="rw-map rw-map--small"
+                   data-controller="map"
+                   data-map-token-value="<%= ENV['MAPBOX_ACCESS_TOKEN'] %>"
+                   data-map-markers-value="<%= day_markers.to_json %>">
+              </div>
+            <% end %>
           <% else %>
             <p class="rw-muted rw-space-top">Activities will appear here.</p>
           <% end %>
-
-          <div class="rw-map-placeholder">Google Map</div>
         </section>
       <% end %>
     </div>
