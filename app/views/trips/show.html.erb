@@ -1,4 +1,4 @@
-<div class="rw-container rw-trip-show" data-controller="modal">
+<div class="rw-container rw-trip-show">
   <h1 class="rw-trip-title">Your trip to “<%= @trip.city %>”</h1>
 
   <div class="rw-trip-grid">
@@ -14,9 +14,7 @@
       </ul>
 
       <div class="rw-card-actions">
-        <button class="rw-btn rw-btn--secondary" data-action="click->modal#open">
-          Adjust Preferences
-        </button>
+<%= link_to "Adjust Data", edit_trip_path(@trip), class: "rw-btn rw-btn--secondary" %>
       </div>
     </section>
 
@@ -96,5 +94,4 @@
             class: "rw-btn rw-btn--secondary",
             data: { turbo: false } %>
   </div>
-  <%= render "preferences_modal", trip: @trip, all_preferences: @all_preferences %>
 </div>
