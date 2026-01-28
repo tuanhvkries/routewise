@@ -2,26 +2,83 @@
   <div class="rw-modal__backdrop" data-action="click->modal#close"></div>
 
   <div class="rw-modal__panel">
-    <h3>Adjust Preferences</h3>
+    <h3>Adjust Data</h3>
 
-    <%= form_with url: update_preferences_trip_path(trip), method: :patch, data: { turbo: false } do %>
-      <div class="rw-chips" style="margin-top:12px;">
-        <% all_preferences.each do |pref| %>
-          <label class="rw-chip">
-            <%= check_box_tag "trip[preference_ids][]", pref.id, trip.preference_ids.include?(pref.id) %>
-            <span><%= pref.name %></span>
-          </label>
-        <% end %>
-      </div>
+    <%= form_with model: trip, url: trip_path(trip), method: :patch, class: "rw-form", data: { turbo: false } do |f| %>
+      <% if trip.errors.any? %>
+        <div class="rw-errors">
+          <ul>
+            <% trip.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-      <div class="rw-field">
-        <label>Further preferences</label>
-        <%= text_area_tag "trip[further_preferences]", trip.further_preferences, class: "rw-input", rows: 3 %>
+      <div class="rw-grid">
+        <!-- LEFT COLUMN -->
+        <div class="rw-col">
+          <div class="rw-field">
+            <%= f.label :city, "Location", class: "rw-label" %>
+            <%= f.text_field :city, placeholder: "City", class: "rw-input" %>
+          </div>
+
+          <div class="rw-field">
+            <%= f.label :departure, "Departure:", class: "rw-label" %>
+            <%= f.text_field :departure, placeholder: "City", class: "rw-input" %>
+          </div>
+
+          <div class="rw-field">
+            <span class="rw-label">Travel Dates</span>
+            <div class="rw-row">
+              <%= f.date_field :start_date, class: "rw-input" %>
+              <%= f.date_field :end_date, class: "rw-input" %>
+            </div>
+          </div>
+
+          <div class="rw-field">
+            <%= f.label :budget, "Budget:", class: "rw-label" %>
+            <%= f.number_field :budget, step: 1, placeholder: "2000", class: "rw-input" %>
+          </div>
+
+          <div class="rw-field">
+            <%= f.label :people, "People:", class: "rw-label" %>
+            <%= f.select :people, (1..10), {}, class: "rw-select" %>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="rw-col">
+          <div class="rw-field">
+            <span class="rw-label">Preferences</span>
+            <span class="rw-help">Choose your preferences</span>
+
+            <div class="rw-checks">
+              <% all_preferences.each do |pref| %>
+                <label class="rw-check">
+                  <%= check_box_tag "trip[preference_ids][]",
+                        pref.id,
+                        trip.preference_ids.include?(pref.id),
+                        class: "rw-checkbox" %>
+                  <span><%= pref.name %></span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="rw-field">
+            <span class="rw-label">Further preferences</span>
+            <%= f.text_area :further_preferences,
+                  placeholder: "put all your further preferences here",
+                  rows: 6,
+                  class: "rw-textarea" %>
+          </div>
+        </div>
       </div>
 
       <div class="rw-actions">
         <button type="button" class="rw-btn rw-btn--secondary" data-action="click->modal#close">Cancel</button>
-        <button type="submit" class="rw-btn rw-btn--primary">Regenerate</button>
+        <%= f.submit "Submit", class: "rw-btn rw-btn--primary" %>
       </div>
     <% end %>
   </div>
