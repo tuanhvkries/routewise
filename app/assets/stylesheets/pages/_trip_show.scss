@@ -129,7 +129,7 @@
   padding: 0 22px;
   border-radius: 9999px;
 
-  font-weight: 700;
+  font-weight: 500;
   font-size: 14px;
 
   display: inline-flex;
@@ -141,23 +141,30 @@
 }
 
 .rw-btn--primary {
-  background: #0b0b0b;
+  background: #234B52;
   color: #fff;
-  border: 2px solid #0b0b0b;
+  border: 1px solid #234B52;
 }
 
 .rw-btn--primary:hover {
-  opacity: 0.92;
+  box-shadow: #00CF83 0px 0px 20px;
+  color: #234B52;
+  background: #FFFFFF;
+  transition: all 0.3s ease;
+  border: 1px solid #234B52;
 }
 
 .rw-btn--secondary {
   background: transparent;
-  color: #0b0b0b;
-  border: 2px solid #0b0b0b;
+  color: #234B52;
+  border: 1px solid #0b0b0b;
 }
 
 .rw-btn--secondary:hover {
-  background: rgba(0,0,0,0.06);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: #00CF83 0px 0px 12px;
+  border: 0px;
+  transition: all 0.3s ease;
 }
 
 .rw-card-actions {

@@ -1,18 +1,66 @@
 <div class="rw-container rw-home">
-  <section class="rw-hero">
-    <h1 class="rw-hero-title">
-      Plan your trip in the most effective and environmentally friendly way
-    </h1>
+  <div class="rw-home-hero-container">
+    <div class="rw-hero">
+      <h1 class="rw-hero-title">
+        Plan your trip in the most effective and environmentally friendly way
+      </h1>
 
-    <p class="rw-hero-subtitle">
-      Personalized itineraries + clear CO₂ impact for every travel option.
-    </p>
+      <p class="rw-hero-subtitle">
+        Personalized itineraries + clear CO₂ impact for every travel option.
+      </p>
 
-    <div class="rw-hero-actions">
-      <%= button_to "Plan your trip",
-                    new_trip_path,
-                    method: :get,
-                    class: "rw-btn rw-btn--primary" %>
+      <div class="rw-hero-actions">
+        <%= button_to "Plan your trip",
+                      new_trip_path,
+                      method: :get,
+                      class: "rw-btn rw-btn--primary" %>
+      </div>
     </div>
-  </section>
+    <div class="rw-hero-image-container">
+      <%= image_tag "hero-image.png", class: "rw-hero-image", alt: "Travel planning illustration" %>
+    </div>
+  </div>
+  <div class="rw-home-section">
+    <div style="text-align: center;">
+      <h1 class="rw-home-section-title">How it works</h1>
+    </div>
+    <div class="rw-home-steps">
+      <div class="rw-home-step">
+        <h5 class="rw-home-step-title">1. Enter trip details</h5>
+        <p class="rw-home-step-description">
+          Provide your starting point, destination, and travel dates.
+        </p>
+        <div class="rw-hero-actions">
+        <%= button_to "Plan your trip",
+                      new_trip_path,
+                      method: :get,
+                      class: "rw-btn rw-btn--secondary" %>
+      </div>
+      </div>
+      <div class="rw-home-step">
+        <h5 class="rw-home-step-title">2. Get personalized itineraries</h5>
+        <p class="rw-home-step-description">
+          Receive tailored travel options considering time, cost, and CO₂ impact.
+        </p>
+        <div class="rw-hero-actions">
+        <%= button_to "Plan your trip",
+                      new_trip_path,
+                      method: :get,
+                      class: "rw-btn rw-btn--secondary" %>
+      </div>
+      </div>
+      <div class="rw-home-step">
+        <h5 class="rw-home-step-title">3. Choose the best option</h5>
+        <p class="rw-home-step-description">
+          Select the itinerary that best fits your preferences and sustainability goals.
+        </p>
+        <div class="rw-hero-actions">
+        <%= button_to "Plan your trip",
+                      new_trip_path,
+                      method: :get,
+                      class: "rw-btn rw-btn--secondary" %>
+      </div>
+      </div>
+    </div>
+  </div>
 </div>
