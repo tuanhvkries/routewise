@@ -21,6 +21,7 @@ class TripsController < ApplicationController
   def create
     @trip = current_user.trips.new(trip_params)
     @trip.status = "generating"
+    
 
     if @trip.save
       generate_and_persist_plan!(@trip)
@@ -146,7 +147,7 @@ class TripsController < ApplicationController
             "day_number": 1,
             "date": "YYYY-MM-DD",
             "activities": [
-              {"starts_at":"09:30","title":"...","location":"...","details":"..."}
+              {"starts_at":"09:30","title":"...","location":"...","latitude":48.8566,"longitude":2.3522,"details":"..."}
             ]
           }
         ]
@@ -183,6 +184,8 @@ class TripsController < ApplicationController
             starts_at: a["starts_at"],
             title: a["title"],
             location: a["location"],
+            latitude: a["latitude"],
+            longitude: a["longitude"],
             details: a["details"]
           )
         end
