@@ -53,7 +53,7 @@ gem "sassc-rails"
 gem "devise"
 
 gem "wicked_pdf"
-gem "wkhtmltopdf-binary"
+# gem "wkhtmltopdf-binary"
 
 gem "ruby_llm"
 

@@ -230,7 +230,7 @@ GEM
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
-    prism (1.8.0)
+    prism (1.9.0)
     psych (5.3.1)
       date
       stringio
@@ -352,7 +352,6 @@ GEM
     wicked_pdf (2.8.2)
       activesupport
       ostruct
-    wkhtmltopdf-binary (0.12.6.10)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.7.4)
@@ -393,7 +392,6 @@ DEPENDENCIES
   tzinfo-data
   web-console
   wicked_pdf
-  wkhtmltopdf-binary
 
 RUBY VERSION
    ruby 3.3.5p100
