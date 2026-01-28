@@ -21,7 +21,7 @@ class TripsController < ApplicationController
   def create
     @trip = current_user.trips.new(trip_params)
     @trip.status = "generating"
-    
+
 
     if @trip.save
       generate_and_persist_plan!(@trip)
@@ -96,6 +96,12 @@ class TripsController < ApplicationController
 
   def save
     redirect_to trip_path(@trip), notice: "Your trip has been saved!"
+  end
+
+  # ✅ NEW: allow deleting a trip from the index page
+  def destroy
+    @trip.destroy
+    redirect_to trips_path, notice: "Trip deleted."
   end
 
   def export

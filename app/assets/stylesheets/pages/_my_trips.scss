@@ -3,55 +3,164 @@
   margin: 0 auto;
 }
 
+/* Title like Figma (large + airy) */
 .rw-my-trips-title {
   font-size: 44px;
   font-weight: 800;
-  margin: 6px 0 24px;
+  margin: 18px 0 26px;
 }
 
-.rw-trip-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+/* Grid like Figma */
+.rw-trip-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
 }
 
+/* Card */
 .rw-trip-card {
   background: #ffffff;
-  border-radius: 16px;
-  padding: 16px 18px;
+  border-radius: 18px;
+  overflow: hidden; /* Ensure image respects card rounded corners */
 
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.10);
+}
+
+/* Image wrapper */
+.rw-trip-image {
+  width: 100%;
+  height: 180px; /* Fixed height for consistent card layout */
+  background: #f2f2f2;
+
+  overflow: hidden; /* Crop image inside container */
+  border-radius: 18px 18px 0 0; /* Match card top radius */
+}
+
+/* Trip image */
+.rw-trip-img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover; /* Key property: crop image instead of stretching */
+  object-position: center; /* Center the image like Figma */
+
+  display: block;
+}
+
+/* Content */
+.rw-trip-body {
+  padding: 14px 16px 10px;
 }
 
 .rw-trip-destination {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 800;
-  margin-bottom: 6px;
+  margin: 0 0 6px;
 }
 
 .rw-trip-dates {
-  font-size: 14px;
-  color: rgba(0,0,0,0.65);
-  margin-bottom: 12px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.55);
+  margin: 0;
 }
 
-.rw-trip-open {
-  height: 34px;
-  padding: 0 18px;
-  border-radius: 999px;
+/* Actions row */
+.rw-trip-actions {
+  padding: 10px 14px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
 
-  background: #0b0b0b;
-  color: #ffffff;
-
-  font-weight: 700;
-  font-size: 13px;
-
+/* Buttons */
+.rw-trip-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  height: 28px;
+  padding: 0 14px;
+  border-radius: 999px;
+
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: none;
+
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.55);
+  color: rgba(0, 0, 0, 0.70);
+
+  cursor: pointer;
 }
 
-.rw-trip-open:hover {
+/* Because button_to generates a form */
+.rw-trip-actions form {
+  margin: 0;
+}
+
+.rw-trip-btn:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+/* Primary CTA like Figma bottom button */
+.rw-trip-btn--primary {
+  height: 40px;
+  padding: 0 22px;
+  font-size: 14px;
+  font-weight: 700;
+
+  border: none;
+  background: #19c37d;
+  color: #0b0b0b;
+}
+
+.rw-trip-btn--primary:hover {
   opacity: 0.92;
+}
+
+.rw-trip-btn--danger {
+  opacity: 0.65;
+}
+
+.rw-trip-btn--danger:hover {
+  opacity: 0.85;
+}
+
+/* Bottom CTA alignment */
+.rw-my-trips-cta {
+  margin-top: 22px;
+}
+
+/* Empty state */
+.rw-trip-empty-state {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px;
+
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.rw-trip-empty {
+  margin: 0 0 12px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .rw-trip-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .rw-trip-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rw-my-trips-title {
+    font-size: 34px;
+  }
 }

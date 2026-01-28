@@ -1,33 +1,43 @@
 <div class="rw-container rw-my-trips">
-  <h1 class="rw-my-trips-title">My Trips</h1>
+  <h1 class="rw-my-trips-title">My trips</h1>
 
   <% if @trips.any? %>
-    <div class="rw-trip-list">
+    <div class="rw-trip-grid">
       <% @trips.each do |trip| %>
         <div class="rw-trip-card">
-          <div class="rw-trip-destination"><%= trip.city %></div>
+          <div class="rw-trip-image">
+            <%= image_tag "trips/placeholder.jpg", alt: trip.city, class: "rw-trip-img" %>
+          </div>
 
-          <div class="rw-trip-dates">
-            <%= trip.start_date %> → <%= trip.end_date %>
+          <div class="rw-trip-body">
+            <h3 class="rw-trip-destination">“<%= trip.city.presence || "Destination" %>”</h3>
+
+            <p class="rw-trip-dates">
+              <%= trip.start_date %> → <%= trip.end_date %>
+            </p>
           </div>
 
           <div class="rw-trip-actions">
-            <%= button_to "Open",
+            <%= link_to "Details", trip_path(trip), class: "rw-trip-btn rw-trip-btn--ghost" %>
+
+            <%= button_to "Delete",
                           trip_path(trip),
-                          method: :get,
-                          class: "rw-trip-open rw-nav-button" %>
+                          method: :delete,
+                          form: { data: { turbo_confirm: "Are you sure?" } },
+                          class: "rw-trip-btn rw-trip-btn--ghost rw-trip-btn--danger" %>
           </div>
         </div>
       <% end %>
     </div>
-  <% else %>
-    <div class="rw-trip-card">
-      <p class="rw-trip-empty">No trips yet.</p>
 
-      <%= button_to "Plan your first trip",
-                    new_trip_path,
-                    method: :get,
-                    class: "rw-trip-open rw-nav-button" %>
+    <div class="rw-my-trips-cta">
+      <%= link_to "Plan a trip", new_trip_path, class: "rw-trip-btn rw-trip-btn--primary" %>
+    </div>
+
+  <% else %>
+    <div class="rw-trip-empty-state">
+      <p class="rw-trip-empty">No trips yet.</p>
+      <%= link_to "Plan your first trip", new_trip_path, class: "rw-trip-btn rw-trip-btn--primary" %>
     </div>
   <% end %>
 </div>
