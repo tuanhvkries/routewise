@@ -1,6 +1,7 @@
 .rw-my-trips {
   max-width: 980px;
   margin: 0 auto;
+  padding: 40px 18px;
 }
 
 .rw-my-trips-title {
@@ -9,23 +10,38 @@
   margin: 6px 0 24px;
 }
 
-.rw-trip-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+/* NEW: grid layout like Figma */
+.rw-trip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 28px;
 }
 
+/* Card */
 .rw-trip-card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 16px 18px;
+  overflow: hidden;
 
   border: 1px solid rgba(0,0,0,0.06);
   box-shadow: 0 10px 22px rgba(0,0,0,0.08);
 }
 
+/* NEW: image section */
+.rw-trip-image img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+/* NEW: content padding inside card */
+.rw-trip-content {
+  padding: 16px 18px;
+}
+
 .rw-trip-destination {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
   margin-bottom: 6px;
 }
@@ -36,22 +52,47 @@
   margin-bottom: 12px;
 }
 
-.rw-trip-open {
-  height: 34px;
-  padding: 0 18px;
+/* NEW: actions row */
+.rw-trip-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* NEW: small pill buttons like Figma */
+.rw-trip-btn {
+  height: 28px;
+  padding: 0 12px;
   border-radius: 999px;
 
-  background: #0b0b0b;
-  color: #ffffff;
+  border: 1px solid #0b0b0b;
+  background: transparent;
+  color: #0b0b0b;
 
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.rw-trip-open:hover {
-  opacity: 0.92;
+.rw-trip-btn:hover {
+  opacity: 0.85;
+}
+
+/* Ghost style for Delete */
+.rw-trip-btn--ghost {
+  opacity: 0.55;
+}
+
+/* Empty state */
+.rw-trip-empty-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
 }

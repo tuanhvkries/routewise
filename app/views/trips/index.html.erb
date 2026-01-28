@@ -2,32 +2,44 @@
   <h1 class="rw-my-trips-title">My Trips</h1>
 
   <% if @trips.any? %>
-    <div class="rw-trip-list">
+    <div class="rw-trip-grid">
       <% @trips.each do |trip| %>
         <div class="rw-trip-card">
-          <div class="rw-trip-destination"><%= trip.city %></div>
-
-          <div class="rw-trip-dates">
-            <%= trip.start_date %> → <%= trip.end_date %>
+          <div class="rw-trip-image">
+            <%= image_tag "trips/placeholder.jpg", alt: trip.city %>
           </div>
 
-          <div class="rw-trip-actions">
-            <%= button_to "Open",
-                          trip_path(trip),
-                          method: :get,
-                          class: "rw-trip-open rw-nav-button" %>
+          <div class="rw-trip-content">
+            <div class="rw-trip-destination"><%= trip.city %></div>
+
+            <div class="rw-trip-dates">
+              <%= trip.start_date %> → <%= trip.end_date %>
+            </div>
+
+            <div class="rw-trip-actions">
+              <%= button_to "Details",
+                            trip_path(trip),
+                            method: :get,
+                            class: "rw-trip-btn rw-nav-button" %>
+
+              <%= button_to "Delete",
+                            trip_path(trip),
+                            method: :delete,
+                            data: { confirm: "Are you sure?" },
+                            class: "rw-trip-btn rw-trip-btn--ghost rw-nav-button" %>
+            </div>
           </div>
         </div>
       <% end %>
     </div>
   <% else %>
-    <div class="rw-trip-card">
-      <p class="rw-trip-empty">No trips yet.</p>
+    <div class="rw-trip-empty-card">
+      <p>No trips yet.</p>
 
       <%= button_to "Plan your first trip",
                     new_trip_path,
                     method: :get,
-                    class: "rw-trip-open rw-nav-button" %>
+                    class: "rw-trip-btn rw-nav-button" %>
     </div>
   <% end %>
 </div>
