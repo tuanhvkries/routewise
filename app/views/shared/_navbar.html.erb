@@ -28,11 +28,6 @@
             </button>
 
             <div class="rw-avatar-menu" role="menu" aria-label="User menu">
-              <%= button_to "My trips",
-                            trips_path,
-                            method: :get,
-                            class: "rw-nav-primary rw-nav-button" %>
-
               <%= button_to "Logout",
                             destroy_user_session_path,
                             method: :delete,
@@ -51,12 +46,6 @@
                         new_user_session_path,
                         method: :get,
                         class: "rw-nav-outline rw-nav-button" %>
-
-          <button class="rw-avatar-btn rw-avatar-btn--ghost"
-                  type="button"
-                  aria-label="User">
-            <span class="rw-avatar-icon">👤</span>
-          </button>
         </div>
       <% end %>
     </div>

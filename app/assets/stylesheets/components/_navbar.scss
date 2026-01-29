@@ -82,14 +82,14 @@
 /* ============ BUTTON STYLES ============ */
 /* Primary pill buttons (My trips + Plan a trip) */
 .rw-nav-primary {
-  background: #86d3bb !important;
+  background: #86d3bb;
   color: #ffffff !important;
   border: 1px solid #ffffff;
-  height: 36px;
+  height: 32px;
   padding: 0 20px;
-  border-radius: 16px;
+  border-radius: 999px;
 
-  font-weight: 700;
+  font-weight: 400;
   font-size: 14px;
 
   display: inline-flex;
@@ -98,21 +98,21 @@
 }
 
 .rw-nav-primary:hover {
-  opacity: 0.92;
+  background: rgba(35, 75, 82, 0.1);
 }
 
 /* Outline pills ("Sign up" / "Log in") */
 .rw-nav-outline {
-  height: 28px;
+  height: 32px;
   padding: 0 18px;
   border-radius: 999px;
 
   border: 1.5px solid rgba(255, 255, 255, 0.95);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.0);
   color: #fff;
 
-  font-weight: 600;
-  font-size: 12px;
+  font-weight: 400;
+  font-size: 14px;
 
   display: inline-flex;
   align-items: center;
@@ -120,7 +120,7 @@
 }
 
 .rw-nav-outline:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(35, 75, 82, 0.1);
 }
 
 /* ============ AVATAR + MENU (FIXED) ============ */
@@ -198,15 +198,15 @@
   border-radius: 10px;
 
   color: #0b0b0b;
-  font-weight: 700;
-  font-size: 13px;
+  font-weight: 400;
+  font-size: 14px;
 
   display: inline-flex;
   align-items: center;
 }
 
 .rw-menu-item:hover {
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(35, 75, 82, 0.1);
 }
 
 /* ============ RESPONSIVE ============ */
