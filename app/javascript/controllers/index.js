@@ -8,8 +8,3 @@ application.register("modal", ModalController)
 
 import FlashController from "./flash_controller"
 application.register("flash", FlashController)
-
-import { application } from "controllers/application"
-import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
-
-eagerLoadControllersFrom("controllers", application)
