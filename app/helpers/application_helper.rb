@@ -1,4 +1,5 @@
 module ApplicationHelper
+CO2_feature
   def eco_rating_leaves(co2_kg)
     # Lower CO2 = more leaves (more eco-friendly)
     # Thresholds based on typical transport emissions
@@ -14,5 +15,14 @@ module ApplicationHelper
     empty = '<i class="fa-light fa-leaf" style="color: #d1d5db;"></i>' * (5 - rating)
 
     (filled + empty).html_safe
+   end
+  def minutes_to_hours(minutes)
+    return "" if minutes.blank?
+
+    total = minutes.to_i
+    h = total / 60
+    m = total % 60
+    "#{h}h#{format('%02d', m)}"
+
   end
 end

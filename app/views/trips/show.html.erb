@@ -29,7 +29,8 @@
               <div class="rw-transport-mode"><%= t.mode.to_s.upcase %></div>
 
               <div class="rw-muted">
-                <%= t.duration_minutes %> min •
+                <%# Display duration in hours: e.g., 6h18 instead of 378 min %>
+                <%= minutes_to_hours(t.duration_minutes) %> •
                 €<%= t.price %> •
                 <%= t.co2_kg %> kg CO₂
                 <span class="rw-eco-rating"><%= eco_rating_leaves(t.co2_kg) %></span>
