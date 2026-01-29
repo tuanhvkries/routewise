@@ -32,6 +32,7 @@
                 <%= t.duration_minutes %> min •
                 €<%= t.price %> •
                 <%= t.co2_kg %> kg CO₂
+                <span class="rw-eco-rating"><%= eco_rating_leaves(t.co2_kg) %></span>
               </div>
 
               <div class="rw-muted"><%= t.summary %></div>
