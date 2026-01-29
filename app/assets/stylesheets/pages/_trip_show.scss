@@ -23,6 +23,30 @@
   margin-bottom: 22px;
 }
 
+.rw-days {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 14px;
+  align-items: start;
+}
+
+.rw-days > .rw-card {
+  height: 100%;
+}
+
+.rw-days > .rw-card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* responsive: 1 column on small screens */
+@media (max-width: 700px) {
+  .rw-days {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* card */
 .rw-card {
   background: #fff;
@@ -110,6 +134,10 @@
   font-weight: 800;
 }
 
+.rw-activities {
+  flex-grow: 1;
+}
+
 /* map */
 .rw-map {
   width: 100%;
@@ -121,6 +149,10 @@
 .rw-map--small {
   height: 220px;
   margin-top: 14px;
+}
+
+.rw-map {
+  margin-top: auto;
 }
 
 /* buttons */

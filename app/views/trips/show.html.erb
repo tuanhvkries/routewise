@@ -11,6 +11,7 @@
         <li><strong>Dates:</strong> <%= @trip.start_date %> → <%= @trip.end_date %></li>
         <li><strong>People:</strong> <%= @trip.people %></li>
         <li><strong>Preferences:</strong> <%= @trip.preferences.pluck(:name).join(", ").presence || "—" %></li>
+        <li><strong>Further preferences:</strong> <%= @trip.further_preferences.presence || "—" %></li>
       </ul>
 
       <div class="rw-card-actions">
