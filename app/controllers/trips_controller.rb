@@ -1,6 +1,6 @@
 class TripsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_trip, only: %i[show edit update loading status update_preferences save export]
+  before_action :set_trip, only: %i[show edit update loading status update_preferences save export destroy]
 
   SYSTEM_PROMPT = <<~PROMPT
     You are a travel planning assistant.
