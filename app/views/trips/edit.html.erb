@@ -1,7 +1,7 @@
 <div class="rw-trips-new">
   <h1 class="rw-title">Adjust your trip</h1>
 
-  <%= form_with model: @trip, class: "rw-form", data: { turbo: false } do |f| %>
+  <%= form_with model: @trip, class: "rw-form", data: { turbo: false, controller: "loading", action: "submit->loading#submit" } do |f| %>
     <% if @trip.errors.any? %>
       <div class="rw-errors">
         <ul>
