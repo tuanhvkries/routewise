@@ -22,10 +22,8 @@ class TripsController < ApplicationController
     @trip = current_user.trips.new(trip_params)
     @trip.status = "generating"
 
-
     if @trip.save
       generate_and_persist_plan!(@trip)
-
       @trip.update!(status: "ready")
       redirect_to trip_path(@trip)
     else
@@ -74,18 +72,27 @@ class TripsController < ApplicationController
     render json: { status: @trip.status }
   end
 
+  # Used by:
+  # - edit/new form (updates preferences + further_preferences)
+  # - show page "Update further preferences" (updates only further_preferences)
   def update_preferences
-    @trip.update!(
-      further_preferences: params.dig(:trip, :further_preferences),
-      preference_ids: preference_ids_from_params
-    )
+    attrs = {
+      further_preferences: params.dig(:trip, :further_preferences)
+    }
+
+    # Only update preference_ids if they were actually submitted,
+    # otherwise we would wipe existing preferences when updating from show page.
+    if params.dig(:trip, :preference_ids).present?
+      attrs[:preference_ids] = preference_ids_from_params
+    end
+
+    @trip.update!(attrs)
 
     @trip.update!(status: "generating")
-
     generate_and_persist_plan!(@trip)
-
     @trip.update!(status: "ready")
-    redirect_to trip_path(@trip)
+
+    redirect_to trip_path(@trip), notice: "Further preferences updated."
   rescue JSON::ParserError
     @trip.update!(status: "failed")
     redirect_to trip_path(@trip), alert: "AI returned invalid data. Please try again."
@@ -98,7 +105,6 @@ class TripsController < ApplicationController
     redirect_to trip_path(@trip), notice: "Your trip has been saved!"
   end
 
-  # ✅ NEW: allow deleting a trip from the index page
   def destroy
     @trip.destroy
     redirect_to trips_path, notice: "Trip deleted."

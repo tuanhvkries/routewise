@@ -13,6 +13,18 @@
   <body>
     <%= render "shared/navbar" %>
 
+    <% if notice %>
+      <div class="rw-flash rw-flash--notice">
+        <%= notice %>
+      </div>
+    <% end %>
+
+    <% if alert %>
+      <div class="rw-flash rw-flash--alert">
+        <%= alert %>
+      </div>
+    <% end %>
+
     <main class="rw-container">
       <%= yield %>
     </main>
