@@ -1,6 +1,120 @@
-body { font-family: Arial, sans-serif; font-size: 12px; }
-h1 { font-size: 22px; margin-bottom: 6px; }
-h2 { font-size: 16px; margin-top: 18px; }
-h3 { font-size: 14px; margin-top: 14px; }
-ul { padding-left: 18px; }
-li { margin-bottom: 6px; }
+/* PDF Export Styles — RouteWise */
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header */
+.pdf-header {
+  background-color: #fff;
+  color: #234B52;
+  padding: 20px 28px;
+  position: relative;
+  margin-bottom: 24px;
+  border-radius: 6px;
+}
+
+.pdf-header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #234B52;
+}
+
+.pdf-header p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: rgba(0,0,0,0.65);
+}
+
+.pdf-header .pdf-logo {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 60px;
+}
+
+/* Cards */
+.pdf-card {
+  background: #fff;
+  border: 0px solid #CDDAD5;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+/* Section titles */
+.pdf-card h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #234B52;
+  margin: 0 0 4px;
+  padding-bottom: 6px;
+  border-bottom: 3px solid #00CF83;
+  display: inline-block;
+}
+
+/* Day headers */
+.pdf-day-header {
+  color: #234B52;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 32px 0 14px;
+}
+
+/* Activity items */
+.pdf-activity {
+  border-left: 4px solid #CDDAD5;
+  padding: 8px 0 8px 14px;
+  margin-bottom: 12px;
+}
+
+.pdf-activity strong {
+  font-size: 14px;
+  color: #234B52;
+}
+
+.pdf-activity .pdf-activity-location {
+  color: rgba(0,0,0,0.65);
+  font-size: 12px;
+}
+
+.pdf-activity .pdf-activity-details {
+  margin-top: 2px;
+  font-size: 12px;
+}
+
+/* Transport items */
+.pdf-transport-item {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.pdf-transport-item:last-child {
+  border-bottom: none;
+}
+
+.pdf-transport-mode {
+  font-weight: 700;
+  color: #234B52;
+  font-size: 14px;
+}
+
+.pdf-transport-detail {
+  color: rgba(0,0,0,0.65);
+  font-size: 12px;
+}
+
+/* Footer */
+.pdf-footer {
+  text-align: center;
+  color: rgba(0,0,0,0.4);
+  font-size: 10px;
+  margin-top: 30px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
