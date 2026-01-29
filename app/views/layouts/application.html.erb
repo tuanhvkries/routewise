@@ -13,15 +13,17 @@
   <body>
     <%= render "shared/navbar" %>
 
-    <% if notice %>
-      <div class="rw-flash rw-flash--notice">
-        <%= notice %>
-      </div>
-    <% end %>
+    <% if notice || alert %>
+      <div class="rw-flash-wrap" data-controller="flash" data-flash-timeout-value="3500">
+        <div class="rw-container">
+          <% if notice %>
+            <div class="rw-flash rw-flash--notice"><%= notice %></div>
+          <% end %>
 
-    <% if alert %>
-      <div class="rw-flash rw-flash--alert">
-        <%= alert %>
+          <% if alert %>
+            <div class="rw-flash rw-flash--alert"><%= alert %></div>
+          <% end %>
+        </div>
       </div>
     <% end %>
 
