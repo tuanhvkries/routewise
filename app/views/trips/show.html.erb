@@ -3,7 +3,7 @@
 
   <div class="rw-trip-grid">
     <!-- SUMMARY -->
-    <section class="rw-card">
+    <section class="rw-card rw-card--summary">
       <h3 class="rw-card-title">Summary</h3>
 
       <ul class="rw-list">
@@ -11,11 +11,34 @@
         <li><strong>Dates:</strong> <%= @trip.start_date %> → <%= @trip.end_date %></li>
         <li><strong>People:</strong> <%= @trip.people %></li>
         <li><strong>Preferences:</strong> <%= @trip.preferences.pluck(:name).join(", ").presence || "—" %></li>
-        <li><strong>Further preferences:</strong> <%= @trip.further_preferences.presence || "—" %></li>
       </ul>
 
-      <div class="rw-card-actions">
-<%= link_to "Adjust Data", edit_trip_path(@trip), class: "rw-btn rw-btn--secondary" %>
+      <div class="rw-space-top">
+        <strong>Further preferences:</strong>
+
+        <%= form_with model: @trip,
+                      url: update_preferences_trip_path(@trip),
+                      method: :patch,
+                      data: { turbo: false },
+                      id: "update-further-preferences-form" do |f| %>
+
+          <%= f.text_area :further_preferences,
+                          rows: 3,
+                          class: "rw-input rw-input--full",
+                          placeholder: "e.g. local food, vegan, museums" %>
+        <% end %>
+      </div>
+
+      <div class="rw-card-actions rw-card-actions--split">
+        <button type="submit"
+                form="update-further-preferences-form"
+                class="rw-btn rw-btn--primary">
+          Update preferences
+        </button>
+
+        <%= link_to "Adjust Data",
+                    edit_trip_path(@trip),
+                    class: "rw-btn rw-btn--secondary" %>
       </div>
     </section>
 
@@ -73,7 +96,10 @@
               <% end %>
             </div>
 
-            <% day_markers = day.activities.select { |a| a.latitude.present? && a.longitude.present? }.map { |a| { title: a.title, location: a.location, lat: a.latitude, lng: a.longitude } } %>
+            <% day_markers = day.activities
+                                .select { |a| a.latitude.present? && a.longitude.present? }
+                                .map { |a| { title: a.title, location: a.location, lat: a.latitude, lng: a.longitude } } %>
+
             <% if day_markers.any? %>
               <div class="rw-map rw-map--small"
                    data-controller="map"
@@ -95,13 +121,14 @@
 
   <div class="rw-page-actions">
     <%= button_to "Save",
-              save_trip_path(@trip),
-              method: :patch,
-              class: "rw-btn rw-btn--primary",
-              data: { turbo: false } %>
+                  save_trip_path(@trip),
+                  method: :patch,
+                  class: "rw-btn rw-btn--primary",
+                  data: { turbo: false } %>
+
     <%= link_to "Export",
-            export_trip_path(@trip),
-            class: "rw-btn rw-btn--secondary",
-            data: { turbo: false } %>
+                export_trip_path(@trip),
+                class: "rw-btn rw-btn--secondary",
+                data: { turbo: false } %>
   </div>
 </div>

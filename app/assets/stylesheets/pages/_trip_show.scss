@@ -233,3 +233,39 @@
     font-size: 34px;
   }
 }
+
+.rw-input--full {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 1rem;
+  min-height: 140px;
+}
+
+/* Make the two cards in the grid become equal height */
+.rw-trip-grid {
+  align-items: stretch;
+}
+
+.rw-trip-grid > .rw-card {
+  height: 100%;
+}
+
+/* Summary card */
+.rw-card--summary {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.rw-card--summary .rw-card-actions {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding-top: 1.5rem;
+}
+
+.rw-card--summary .rw-card-actions .rw-btn {
+  width: 100%;
+  text-align: center;
+}
