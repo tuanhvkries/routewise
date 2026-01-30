@@ -3,9 +3,11 @@ class TripsController < ApplicationController
   before_action :set_trip, only: %i[show edit update loading status update_preferences save export destroy]
 
   SYSTEM_PROMPT = <<~PROMPT
-    Return ONLY valid JSON (no markdown/text). Double quotes only. No trailing commas.
-    Prices: realistic whole EUR integers.
-  PROMPT
+      You are a travel planning assistant.
+      Create realistic itineraries and transport options.
+      Return ONLY valid JSON. No markdown, no code fences, no explanations.
+      Budget and prices must be realistic whole numbers in EUR.
+    PROMPT
 
   def index
     @trips = current_user.trips.order(created_at: :desc)
@@ -145,26 +147,47 @@ class TripsController < ApplicationController
   end
 
   def trip_context(trip)
-    prefs = trip.preferences.pluck(:name).join(", ").presence || "none"
-    "city=#{trip.city}; from=#{trip.departure}; dates=#{trip.start_date}..#{trip.end_date}; people=#{trip.people}; budget=#{trip.budget}EUR; prefs=#{prefs}; notes=#{trip.further_preferences}"
-  end
+      prefs = trip.preferences.pluck(:name).join(", ").presence || "none"
 
-  def instructions(trip)
-    [SYSTEM_PROMPT, trip_context(trip)].compact.join("\n\n")
-  end
+      <<~PROMPT
+        Trip info:
+        City: #{trip.city}
+        Departure: #{trip.departure}
+        Dates: #{trip.start_date} to #{trip.end_date}
+        People: #{trip.people}
+        Budget: #{trip.budget}
+        Preferences: #{prefs}
+        Further preferences: #{trip.further_preferences}
+      PROMPT
+    end
 
-  def user_prompt(trip)
-    days = ((trip.end_date - trip.start_date).to_i + 1)
+    def instructions(trip)
+      [SYSTEM_PROMPT, trip_context(trip)].compact.join("\n\n")
+    end
 
-    <<~PROMPT
-      Create a #{days}-day itinerary + 4 transport options.
-      Keys: transport_options, itinerary.
-      transport_options: [{mode, duration_minutes, price, co2_kg, summary}]
-      itinerary: [{day_number, date, activities}]
-      activities: [{starts_at, title, location, latitude, longitude, details}]
-      Output ONLY JSON.
-    PROMPT
-  end
+    def user_prompt(trip)
+      days = ((trip.end_date - trip.start_date).to_i + 1)
+
+      <<~PROMPT
+        Create a #{days}-day trip plan and 3-4 transport options.
+
+        Output JSON EXACTLY like:
+        {
+          "transport_options": [
+            {"mode":"train|flight|bus|car","duration_minutes":120,"price":45,"co2_kg":12.3,"summary":"..."}
+          ],
+          "itinerary": [
+            {
+              "day_number": 1,
+              "date": "YYYY-MM-DD",
+              "activities": [
+                {"starts_at":"09:30","title":"...","location":"...","latitude":48.8566,"longitude":2.3522,"details":"..."}
+              ]
+            }
+          ]
+        }
+      PROMPT
+    end
 
   def generate_and_persist_plan!(trip)
     raw = ask_llm_for_plan!(trip)
