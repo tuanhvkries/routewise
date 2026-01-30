@@ -159,7 +159,7 @@ class TripsController < ApplicationController
         Preferences: #{prefs}
         Further preferences: #{trip.further_preferences}
       PROMPT
-    end
+  end
 
     def instructions(trip)
       [SYSTEM_PROMPT, trip_context(trip)].compact.join("\n\n")
