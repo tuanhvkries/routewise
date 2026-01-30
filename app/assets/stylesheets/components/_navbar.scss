@@ -169,16 +169,18 @@
   right: 0;
   margin-top: 10px;   /* visual spacing without breaking hover */
 
-  width: 190px;
+  width: 150px;
   padding: 10px;
 
   border-radius: 14px;
-  background: #fff;
+  background: #8CD5BA;
 
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 
   display: none;
   z-index: 50;
+  align-items: center;
+  justify-content: center;
 }
 
 /* OPTIONAL: invisible “hover bridge” to make it extra easy to reach menu */
@@ -194,7 +196,7 @@
 /* Keep menu open while hovering avatar OR menu (clickable now) */
 .rw-avatar:hover .rw-avatar-menu,
 .rw-avatar-menu:hover {
-  display: block;
+  display: flex;
 }
 
 /* dropdown items */

@@ -16,11 +16,14 @@
       <div class="rw-space-top">
         <strong>Further preferences:</strong>
 
-        <%= form_with model: @trip,
+          <%= form_with model: @trip,
                       url: update_preferences_trip_path(@trip),
                       method: :patch,
-                      data: { turbo: false },
-                      id: "update-further-preferences-form" do |f| %>
+                      id: "update-further-preferences-form",
+                      data: {
+                        controller: "loading",
+                        action: "turbo:submit-start->loading#start turbo:submit-end->loading#stop"
+                      } do |f| %>
 
           <%= f.text_area :further_preferences,
                           rows: 3,
