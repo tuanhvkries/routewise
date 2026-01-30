@@ -33,9 +33,9 @@ body {
 
 .pdf-header .pdf-logo {
   position: absolute;
-  top: 0px;
+  top: 10px;
   right: 0px;
-  height: 60px;
+  height: 40px;
 }
 
 /* Cards */
