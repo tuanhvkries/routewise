@@ -169,7 +169,7 @@ class TripsController < ApplicationController
       days = ((trip.end_date - trip.start_date).to_i + 1)
 
       <<~PROMPT
-        Create a #{days}-day trip plan and 3-4 transport options.
+        Create a #{days}-day trip plan and 4 most practical transport options.
 
         Output JSON EXACTLY like:
         {
