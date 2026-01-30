@@ -1,5 +1,10 @@
+/* ===========================================
+   MY TRIPS PAGE STYLES
+   Updated: Added Figma design adjustments
+   =========================================== */
+
 .rw-my-trips {
-  max-width: 980px;
+  max-width: 95%; /* MODIFIED: Use percentage instead of fixed width for small screens */
   margin: 0 auto;
 }
 
@@ -10,11 +15,11 @@
   margin: 18px 0 26px;
 }
 
-/* Grid like Figma */
+/* Grid like Figma - 3 columns layout */
 .rw-trip-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
+  gap: 16px; /* MODIFIED: Was 22px, reduced for smaller screens */
 }
 
 /* Card */
@@ -30,7 +35,7 @@
 /* Image wrapper */
 .rw-trip-image {
   width: 100%;
-  height: 180px; /* Fixed height for consistent card layout */
+  height: 120px; /* MODIFIED: Was 180px, reduced to fit smaller cards */
   background: #f2f2f2;
 
   overflow: hidden; /* Crop image inside container */
@@ -148,14 +153,18 @@
   color: rgba(0, 0, 0, 0.7);
 }
 
-/* Responsive */
-@media (max-width: 980px) {
+/* ===========================================
+   RESPONSIVE BREAKPOINTS
+   MODIFIED: Adjusted for smaller screens (13 inch laptops)
+   =========================================== */
+
+@media (max-width: 520px) {
   .rw-trip-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 380px) {
   .rw-trip-grid {
     grid-template-columns: 1fr;
   }
