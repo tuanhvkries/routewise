@@ -157,7 +157,7 @@ class TripsController < ApplicationController
     days = ((trip.end_date - trip.start_date).to_i + 1)
 
     <<~PROMPT
-      Create a #{days}-day itinerary + 3 transport options.
+      Create a #{days}-day itinerary + 4 transport options.
       Keys: transport_options, itinerary.
       transport_options: [{mode, duration_minutes, price, co2_kg, summary}]
       itinerary: [{day_number, date, activities}]

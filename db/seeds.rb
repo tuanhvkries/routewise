@@ -27,7 +27,7 @@ PREFERENCES = [
   "Wellness",
   "Walking",
   "Relaxing",
-  "Action",
+  "Adventure",
   "Party",
   "Nature",
   "Shopping",
