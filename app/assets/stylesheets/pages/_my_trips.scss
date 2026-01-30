@@ -18,6 +18,12 @@
 /* Grid like Figma - 3 columns layout */
 .rw-trip-grid {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px; /* MODIFIED: Was 22px, reduced for smaller screens */
+}
+
+.rw-trip-index-grid {
+  display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px; /* MODIFIED: Was 22px, reduced for smaller screens */
 }
