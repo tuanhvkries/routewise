@@ -7,9 +7,11 @@ export default class extends Controller {
     this.index = 0
 
     this.messages = [
-      "Adding new activities…",
-      "Rearranging activities…",
+      "Analyzing your preferences…",
       "Checking transport options…",
+      "Saving CO2…",
+      "Adding activities…",
+      "Arranging activities…",
       "Optimizing your schedule…",
       "Finalizing your trip…"
     ]
