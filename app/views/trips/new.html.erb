@@ -1,16 +1,12 @@
 <div class="rw-trips-new">
   <h1 class="rw-title">Plan your trip</h1>
 
-  <%= form_with model: @trip, class: "rw-form", data: { controller: "loading", action: "submit->loading#submit" } do |f| %>
-    <% if @trip.errors.any? %>
-      <div class="rw-errors">
-        <ul>
-          <% @trip.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= form_with model: @trip,
+                  class: "rw-form",
+                  data: {
+                    controller: "loading",
+                    action: "turbo:submit-start->loading#start turbo:submit-end->loading#stop"
+                  } do |f| %>
 
     <div class="rw-grid">
       <!-- LEFT COLUMN -->

@@ -3,10 +3,8 @@ class TripsController < ApplicationController
   before_action :set_trip, only: %i[show edit update loading status update_preferences save export destroy]
 
   SYSTEM_PROMPT = <<~PROMPT
-    You are a travel planning assistant.
-    Create realistic itineraries and transport options.
-    Return ONLY valid JSON. No markdown, no code fences, no explanations.
-    Budget and prices must be realistic whole numbers in EUR.
+    Return ONLY valid JSON (no markdown/text). Double quotes only. No trailing commas.
+    Prices: realistic whole EUR integers.
   PROMPT
 
   def index
@@ -148,17 +146,7 @@ class TripsController < ApplicationController
 
   def trip_context(trip)
     prefs = trip.preferences.pluck(:name).join(", ").presence || "none"
-
-    <<~PROMPT
-      Trip info:
-      City: #{trip.city}
-      Departure: #{trip.departure}
-      Dates: #{trip.start_date} to #{trip.end_date}
-      People: #{trip.people}
-      Budget: #{trip.budget}
-      Preferences: #{prefs}
-      Further preferences: #{trip.further_preferences}
-    PROMPT
+    "city=#{trip.city}; from=#{trip.departure}; dates=#{trip.start_date}..#{trip.end_date}; people=#{trip.people}; budget=#{trip.budget}EUR; prefs=#{prefs}; notes=#{trip.further_preferences}"
   end
 
   def instructions(trip)
@@ -169,23 +157,12 @@ class TripsController < ApplicationController
     days = ((trip.end_date - trip.start_date).to_i + 1)
 
     <<~PROMPT
-      Create a #{days}-day trip plan and 3-4 transport options.
-
-      Output JSON EXACTLY like:
-      {
-        "transport_options": [
-          {"mode":"train|flight|bus|car","duration_minutes":120,"price":45,"co2_kg":12.3,"summary":"..."}
-        ],
-        "itinerary": [
-          {
-            "day_number": 1,
-            "date": "YYYY-MM-DD",
-            "activities": [
-              {"starts_at":"09:30","title":"...","location":"...","latitude":48.8566,"longitude":2.3522,"details":"..."}
-            ]
-          }
-        ]
-      }
+      Create a #{days}-day itinerary + 3 transport options.
+      Keys: transport_options, itinerary.
+      transport_options: [{mode, duration_minutes, price, co2_kg, summary}]
+      itinerary: [{day_number, date, activities}]
+      activities: [{starts_at, title, location, latitude, longitude, details}]
+      Output ONLY JSON.
     PROMPT
   end
 
