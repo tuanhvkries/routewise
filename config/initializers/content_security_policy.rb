@@ -10,6 +10,7 @@ Rails.application.config.content_security_policy do |policy|
                      "https://source.unsplash.com"
 
   policy.object_src  :none
-  policy.script_src  :self, :https
-  policy.style_src   :self, :https
+  policy.script_src  :self, :https, :unsafe_inline, :blob
+  policy.style_src   :self, :https, :unsafe_inline
+  policy.worker_src  :self, :blob
 end
