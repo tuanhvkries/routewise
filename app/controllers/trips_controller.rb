@@ -21,6 +21,7 @@ class TripsController < ApplicationController
   def create
     @trip = current_user.trips.new(trip_params)
     @trip.status = "generating"
+    @trip.image_url = UnsplashService.city_image(@trip.city)
 
     if @trip.save
       generate_and_persist_plan!(@trip)
