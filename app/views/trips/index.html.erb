@@ -6,7 +6,9 @@
       <% @trips.each do |trip| %>
         <div class="rw-trip-card">
           <div class="rw-trip-image">
-            <%= image_tag "trips/placeholder.jpg", alt: trip.city, class: "rw-trip-img" %>
+            <%= image_tag trip.image_url.presence || "https://loremflickr.com/800/500/#{CGI.escape(trip.city.to_s)},city",
+              alt: trip.city,
+              class: "rw-trip-img" %>
           </div>
 
           <div class="rw-trip-body">

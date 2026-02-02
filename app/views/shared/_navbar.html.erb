@@ -11,15 +11,13 @@
     <div class="rw-nav-right">
       <% if user_signed_in? %>
         <div class="rw-nav-actions">
-          <%= button_to "My trips",
-                        trips_path,
-                        method: :get,
-                        class: "rw-nav-primary rw-nav-button" %>
+          <%= link_to trips_path, class: "rw-nav-primary rw-nav-button" do %>
+            <i class="fa-solid fa-heart"></i> My trips
+          <% end %>
 
-          <%= button_to "Plan a trip",
-                        new_trip_path,
-                        method: :get,
-                        class: "rw-nav-primary rw-nav-button" %>
+          <%= link_to new_trip_path, class: "rw-nav-primary rw-nav-button" do %>
+            <i class="fa-solid fa-route"></i> Plan a trip
+          <% end %>
 
           <div class="rw-avatar">
             <button class="rw-avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false">
@@ -27,24 +25,21 @@
             </button>
 
             <div class="rw-avatar-menu" role="menu" aria-label="User menu">
-              <%= button_to "Logout",
-                            destroy_user_session_path,
-                            method: :delete,
-                            class: "rw-nav-primary rw-nav-button" %>
+              <%= button_to destroy_user_session_path, method: :delete, class: "rw-nav-primary rw-nav-button" do %>
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Log out
+              <% end %>
             </div>
           </div>
         </div>
       <% else %>
         <div class="rw-nav-actions">
-          <%= button_to "Sign up",
-                        new_user_registration_path,
-                        method: :get,
-                        class: "rw-nav-outline rw-nav-button" %>
+          <%= link_to new_user_registration_path, class: "rw-nav-outline rw-nav-button" do %>
+            <i class="fa-solid fa-user-plus"></i> Sign up
+          <% end %>
 
-          <%= button_to "Log in",
-                        new_user_session_path,
-                        method: :get,
-                        class: "rw-nav-outline rw-nav-button" %>
+          <%= link_to new_user_session_path, class: "rw-nav-outline rw-nav-button" do %>
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Log in
+          <% end %>
         </div>
       <% end %>
     </div>
