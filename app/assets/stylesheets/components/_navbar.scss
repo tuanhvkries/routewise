@@ -51,6 +51,10 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+
+  i, svg {
+    margin-right: 10px;
+  }
 }
 
 /* ============ BRAND ============ */

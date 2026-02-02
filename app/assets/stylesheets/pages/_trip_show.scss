@@ -179,6 +179,10 @@
 
   text-decoration: none;
   box-sizing: border-box;
+
+  i, svg {
+    margin-right: 10px;
+  }
 }
 
 .rw-btn--primary {
