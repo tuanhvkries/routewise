@@ -36,12 +36,12 @@
         <button type="submit"
                 form="update-further-preferences-form"
                 class="rw-btn rw-btn--primary">
-          Update preferences
+          <i class="fa-solid fa-pen-to-square"></i> Update preferences
         </button>
 
-        <%= link_to "Adjust Data",
-                    edit_trip_path(@trip),
-                    class: "rw-btn rw-btn--secondary" %>
+        <%= link_to edit_trip_path(@trip), class: "rw-btn rw-btn--secondary" do %>
+          <i class="fa-solid fa-sliders"></i> Adjust your data
+        <% end %>
       </div>
     </section>
 
@@ -123,15 +123,12 @@
   <% end %>
 
   <div class="rw-page-actions">
-    <%= button_to "Save",
-                  save_trip_path(@trip),
-                  method: :patch,
-                  class: "rw-btn rw-btn--primary",
-                  data: { turbo: false } %>
+    <%= button_to save_trip_path(@trip), method: :patch, class: "rw-btn rw-btn--primary", data: { turbo: false } do %>
+      <i class="fa-solid fa-heart"></i> Save your trip
+    <% end %>
 
-    <%= link_to "Export",
-                export_trip_path(@trip),
-                class: "rw-btn rw-btn--secondary",
-                data: { turbo: false } %>
+    <%= link_to export_trip_path(@trip), class: "rw-btn rw-btn--secondary", data: { turbo: false } do %>
+      <i class="fa-solid fa-file-pdf"></i> Export your trip
+    <% end %>
   </div>
 </div>

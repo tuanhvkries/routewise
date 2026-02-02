@@ -5,19 +5,21 @@
     <div class="rw-trip-index-grid">
       <% @trips.each do |trip| %>
         <div class="rw-trip-card">
-          <div class="rw-trip-image">
-            <%= image_tag trip.image_url.presence || "https://loremflickr.com/800/500/#{CGI.escape(trip.city.to_s)},city",
-              alt: trip.city,
-              class: "rw-trip-img" %>
-          </div>
+          <%= link_to trip_path(trip), class: "rw-trip-card-link" do %>
+            <div class="rw-trip-image">
+              <%= image_tag trip.image_url.presence || "https://loremflickr.com/800/500/#{CGI.escape(trip.city.to_s)},city",
+                alt: trip.city,
+                class: "rw-trip-img" %>
+            </div>
 
-          <div class="rw-trip-body">
-            <h3 class="rw-trip-destination">“<%= trip.city.presence || "Destination" %>”</h3>
+            <div class="rw-trip-body">
+              <h3 class="rw-trip-destination">"<%= trip.city.presence || "Destination" %>"</h3>
 
-            <p class="rw-trip-dates">
-              <%= trip.start_date %> → <%= trip.end_date %>
-            </p>
-          </div>
+              <p class="rw-trip-dates">
+                <%= trip.start_date %> → <%= trip.end_date %>
+              </p>
+            </div>
+          <% end %>
 
           <div class="rw-trip-actions">
             <%= link_to "Details", trip_path(trip), class: "rw-trip-btn rw-trip-btn--ghost" %>
@@ -33,7 +35,9 @@
     </div>
 
     <div class="rw-my-trips-cta">
-      <%= link_to "Plan a trip", new_trip_path, class: "rw-btn rw-btn--primary" %>
+      <%= link_to new_trip_path, class: "rw-btn rw-btn--primary" do %>
+        <i class="fa-solid fa-route"></i> Plan your trip
+      <% end %>
     </div>
 
   <% else %>
