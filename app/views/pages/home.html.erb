@@ -10,10 +10,9 @@
       </p>
 
       <div class="rw-hero-actions">
-        <%= button_to "Plan your trip",
-                      new_trip_path,
-                      method: :get,
-                      class: "rw-btn rw-btn--primary" %>
+        <%= link_to new_trip_path, class: "rw-btn rw-btn--primary" do %>
+          <i class="fa-solid fa-route"></i> Plan your trip
+        <% end %>
       </div>
     </div>
     <div class="rw-hero-image-container">
@@ -32,10 +31,9 @@
           Provide your starting point, destination, and travel dates.
         </p>
         <div class="rw-hero-actions">
-        <%= button_to "Enter your details",
-                      new_trip_path,
-                      method: :get,
-                      class: "rw-btn rw-btn--secondary" %>
+        <%= link_to new_trip_path, class: "rw-btn rw-btn--secondary" do %>
+          <i class="fa-solid fa-route"></i> Enter your details
+        <% end %>
       </div>
       </div>
       <div class="rw-home-step">
@@ -45,10 +43,9 @@
           Receive tailored travel options considering time, cost, and CO₂ impact.
         </p>
         <div class="rw-hero-actions">
-        <%= button_to "Get your itineraries",
-                      new_trip_path,
-                      method: :get,
-                      class: "rw-btn rw-btn--secondary" %>
+        <%= link_to new_trip_path, class: "rw-btn rw-btn--secondary" do %>
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Get your itineraries
+        <% end %>
       </div>
       </div>
       <div class="rw-home-step">
@@ -58,10 +55,9 @@
           Select the itinerary that best fits your preferences and sustainability goals.
         </p>
         <div class="rw-hero-actions">
-        <%= button_to "Get your options",
-                      new_trip_path,
-                      method: :get,
-                      class: "rw-btn rw-btn--secondary" %>
+        <%= link_to new_trip_path, class: "rw-btn rw-btn--secondary" do %>
+          <i class="fa-solid fa-leaf"></i> Get your options
+        <% end %>
       </div>
       </div>
     </div>
