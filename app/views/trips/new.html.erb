@@ -49,8 +49,6 @@
           <%= f.label :people, "People:", class: "rw-label" %>
           <%= f.select :people, (1..10), {}, class: "rw-select" %>
         </div>
-
-        <%= f.submit "Submit", class: "rw-submit" %>
       </div>
 
       <!-- RIGHT COLUMN -->
@@ -79,6 +77,14 @@
                 class: "rw-textarea" %>
         </div>
       </div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <button type="submit" class="rw-btn rw-btn--primary">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Get your itineraries
+          </button>
+          <%= link_to root_path, class: "rw-btn rw-btn--secondary" do %>
+            <i class="fa-solid fa-circle-xmark"></i> Cancel
+          <% end %>
+        </div>
     </div>
   <% end %>
 </div>

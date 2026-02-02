@@ -10,9 +10,11 @@
 
 /* Title like Figma (large + airy) */
 .rw-my-trips-title {
-  font-size: 44px;
+  font-size: 40px;
   font-weight: 800;
-  margin: 18px 0 26px;
+  line-height: 1.05;
+  margin: 0 0 32px;
+  color: #234B52;
 }
 
 /* Grid like Figma - 3 columns layout */
@@ -25,6 +27,7 @@
 .rw-trip-index-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 40px;
   gap: 16px; /* MODIFIED: Was 22px, reduced for smaller screens */
 }
 
@@ -32,10 +35,22 @@
 .rw-trip-card {
   background: #ffffff;
   border-radius: 18px;
-  overflow: hidden; /* Ensure image respects card rounded corners */
+  overflow: hidden;
 
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.10);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease, border 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+    border: 1px solid #00CF83;
+  }
+}
+
+.rw-trip-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 /* Image wrapper */
