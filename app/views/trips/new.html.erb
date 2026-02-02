@@ -8,6 +8,16 @@
                     action: "turbo:submit-start->loading#start turbo:submit-end->loading#stop"
                   } do |f| %>
 
+    <% if @trip.errors.any? %>
+      <div class="rw-errors">
+        <ul>
+          <% @trip.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
     <div class="rw-grid">
       <!-- LEFT COLUMN -->
       <div class="rw-col">
@@ -21,12 +31,13 @@
           <%= f.text_field :departure, placeholder: "City", class: "rw-input" %>
         </div>
 
-        <div class="rw-field">
+        <div class="rw-field" data-controller="date-range">
           <span class="rw-label">Travel Dates</span>
           <div class="rw-row">
-            <%= f.date_field :start_date, class: "rw-input", min: Date.today %>
-            <%= f.date_field :end_date, class: "rw-input", min: Date.today %>
+            <%= f.date_field :start_date, class: "rw-input", min: Date.today, data: { date_range_target: "start", action: "change->date-range#updateEndMin" } %>
+            <%= f.date_field :end_date, class: "rw-input", min: Date.today, data: { date_range_target: "end", action: "change->date-range#updateEndMin" } %>
           </div>
+          <span class="rw-field-error" data-date-range-target="error"></span>
         </div>
 
         <div class="rw-field">
