@@ -28,8 +28,8 @@
         <div class="rw-field">
           <span class="rw-label">Travel Dates</span>
           <div class="rw-row">
-            <%= f.date_field :start_date, class: "rw-input" %>
-            <%= f.date_field :end_date, class: "rw-input" %>
+            <%= f.date_field :start_date, class: "rw-input", min: Date.today %>
+            <%= f.date_field :end_date, class: "rw-input", min: Date.today %>
           </div>
         </div>
 
