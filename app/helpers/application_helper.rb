@@ -23,6 +23,10 @@ module ApplicationHelper
     h = total / 60
     m = total % 60
     "#{h}h#{format('%02d', m)}"
+  end
 
+  def travel_search_url(origin:, destination:)
+    # Rome2Rio handles city names well and shows all transport options worldwide
+    "https://www.rome2rio.com/map/#{ERB::Util.url_encode(origin)}/#{ERB::Util.url_encode(destination)}"
   end
 end

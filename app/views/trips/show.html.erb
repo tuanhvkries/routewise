@@ -67,6 +67,18 @@
             </div>
           <% end %>
         </div>
+
+        <div class="rw-card-actions">
+          <%= link_to travel_search_url(
+                origin: @trip.departure,
+                destination: @trip.city
+              ),
+              class: "rw-btn rw-btn--secondary",
+              target: "_blank",
+              rel: "noopener noreferrer" do %>
+            <i class="fa-solid fa-route"></i> Book Transport
+          <% end %>
+        </div>
       <% else %>
         <p class="rw-muted">Transport options will appear here after generation.</p>
       <% end %>
