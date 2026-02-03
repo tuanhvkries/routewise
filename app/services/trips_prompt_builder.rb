@@ -17,6 +17,7 @@ class TripsPromptBuilder
       Create a #{days}-day trip plan and 4 most practical transport options.
 
       HARD RULES (must follow):
+    - JSON must be strictly valid. No trailing commas. No extra text before/after.
     - Realistic transport prices in whole numbers in EUR based on each tranport option.
     - Each tranport option's duration must be realistic based on the distance between Departure to the Destination and each transport option.
     - For EACH day, include exactly 4 to 5 realistic activities total.
