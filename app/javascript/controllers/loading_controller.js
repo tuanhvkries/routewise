@@ -15,6 +15,9 @@ export default class extends Controller {
       "Optimizing your schedule…",
       "Finalizing your trip…"
     ]
+
+    // ✅ NEW: auto start when requested
+    if (this.element.dataset.autostart === "true") this.start()
   }
 
   start() {

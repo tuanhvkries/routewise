@@ -1,13 +1,8 @@
 class TripsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_trip, only: %i[show edit update loading status update_preferences save export destroy]
-
-  SYSTEM_PROMPT = <<~PROMPT
-      You are a travel planning assistant.
-      Create realistic itineraries and transport options.
-      Return ONLY valid JSON. No markdown, no code fences, no explanations.
-      Budget and prices must be realistic whole numbers in EUR.
-    PROMPT
+  before_action :set_trip, only: %i[
+    show edit update loading status update_preferences save export destroy
+  ]
 
   def index
     @trips = current_user.trips.order(created_at: :desc)
@@ -21,22 +16,17 @@ class TripsController < ApplicationController
   def create
     @trip = current_user.trips.new(trip_params)
     @trip.status = "generating"
+    @trip.progress = 0
+    @trip.generation_error = nil
     @trip.image_url = UnsplashService.city_image(@trip.city)
 
     if @trip.save
-      generate_and_persist_plan!(@trip)
-      @trip.update!(status: "ready")
+      TripGenerationJob.perform_later(@trip.id)
       redirect_to trip_path(@trip)
     else
       @preferences = Preference.order(:name)
       render :new, status: :unprocessable_entity
     end
-  rescue JSON::ParserError
-    @trip.update!(status: "failed") if @trip&.persisted?
-    redirect_to new_trip_path, alert: "AI returned invalid data. Please try again."
-  rescue RubyLLM::RateLimitError, RubyLLM::ServerError, RubyLLM::ServiceUnavailableError, Faraday::TimeoutError, Faraday::ConnectionFailed
-    @trip.update!(status: "failed") if @trip&.persisted?
-    redirect_to new_trip_path, alert: "AI service is busy right now. Please try again."
   end
 
   def edit
@@ -45,20 +35,13 @@ class TripsController < ApplicationController
 
   def update
     if @trip.update(trip_params)
-      @trip.update!(status: "generating")
-      generate_and_persist_plan!(@trip)
-      @trip.update!(status: "ready")
+      @trip.update!(status: "generating", progress: 0, generation_error: nil)
+      TripGenerationJob.perform_later(@trip.id)
       redirect_to trip_path(@trip)
     else
       @preferences = Preference.order(:name)
       render :edit, status: :unprocessable_entity
     end
-  rescue JSON::ParserError
-    @trip.update!(status: "failed")
-    redirect_to trip_path(@trip), alert: "AI returned invalid data. Please try again."
-  rescue RubyLLM::RateLimitError, RubyLLM::ServerError, RubyLLM::ServiceUnavailableError, Faraday::TimeoutError, Faraday::ConnectionFailed
-    @trip.update!(status: "failed")
-    redirect_to trip_path(@trip), alert: "AI service is busy right now. Please try again."
   end
 
   def show
@@ -67,39 +50,43 @@ class TripsController < ApplicationController
     @all_preferences = Preference.order(:name)
   end
 
-  def loading; end
+  def loading
+    # loading.html.erb will poll status endpoint
+  end
 
   def status
-    render json: { status: @trip.status }
+    expires_now
+    response.headers["Cache-Control"] = "no-store"
+
+    render json: {
+      status: @trip.status,
+      progress: @trip.progress,
+      generation_error: @trip.generation_error,
+      updated_at: @trip.updated_at.to_i
+    }
   end
+
 
   # Used by:
   # - edit/new form (updates preferences + further_preferences)
-  # - show page "Update further preferences" (updates only further_preferences)
+  # - show page button (updates only further_preferences)
   def update_preferences
     attrs = {
       further_preferences: params.dig(:trip, :further_preferences)
     }
 
-    # Only update preference_ids if they were actually submitted,
-    # otherwise we would wipe existing preferences when updating from show page.
+    # Only update preference_ids if present, otherwise keep existing ones.
     if params.dig(:trip, :preference_ids).present?
       attrs[:preference_ids] = preference_ids_from_params
     end
 
     @trip.update!(attrs)
+    @trip.update!(status: "generating", progress: 0, generation_error: nil)
 
-    @trip.update!(status: "generating")
-    generate_and_persist_plan!(@trip)
-    @trip.update!(status: "ready")
-
-    redirect_to trip_path(@trip), notice: "Further preferences updated."
-  rescue JSON::ParserError
-    @trip.update!(status: "failed")
-    redirect_to trip_path(@trip), alert: "AI returned invalid data. Please try again."
-  rescue RubyLLM::RateLimitError, RubyLLM::ServerError, RubyLLM::ServiceUnavailableError, Faraday::TimeoutError, Faraday::ConnectionFailed
-    @trip.update!(status: "failed")
-    redirect_to trip_path(@trip), alert: "AI service is busy right now. Please try again."
+    TripGenerationJob.perform_later(@trip.id)
+    redirect_to trip_path(@trip)
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to trip_path(@trip), alert: e.record.errors.full_messages.to_sentence
   end
 
   def save
@@ -145,121 +132,5 @@ class TripsController < ApplicationController
 
   def preference_ids_from_params
     Array(params.dig(:trip, :preference_ids)).reject(&:blank?)
-  end
-
-  def trip_context(trip)
-      prefs = trip.preferences.pluck(:name).join(", ").presence || "none"
-
-      <<~PROMPT
-        Trip info:
-        City: #{trip.city}
-        Departure: #{trip.departure}
-        Dates: #{trip.start_date} to #{trip.end_date}
-        People: #{trip.people}
-        Budget: #{trip.budget}
-        Preferences: #{prefs}
-        Further preferences: #{trip.further_preferences}
-      PROMPT
-  end
-
-    def instructions(trip)
-      [SYSTEM_PROMPT, trip_context(trip)].compact.join("\n\n")
-    end
-
-    def user_prompt(trip)
-      days = ((trip.end_date - trip.start_date).to_i + 1)
-
-      <<~PROMPT
-        Create a #{days}-day trip plan and 4 most practical transport options.
-
-        Output JSON EXACTLY like:
-        {
-          "transport_options": [
-            {"mode":"train|flight|bus|car","duration_minutes":120,"price":45,"co2_kg":12.3,"summary":"..."}
-          ],
-          "itinerary": [
-            {
-              "day_number": 1,
-              "date": "YYYY-MM-DD",
-              "activities": [
-                {"starts_at":"09:30","title":"...","location":"...","latitude":48.8566,"longitude":2.3522,"details":"..."}
-              ]
-            }
-          ]
-        }
-      PROMPT
-    end
-
-  def generate_and_persist_plan!(trip)
-    raw = ask_llm_for_plan!(trip)
-    data = JSON.parse(extract_json(raw))
-
-    ActiveRecord::Base.transaction do
-      trip.transport_options.destroy_all
-      trip.itinerary_days.destroy_all
-
-      Array(data["transport_options"]).each do |t|
-        trip.transport_options.create!(
-          mode: t["mode"],
-          duration_minutes: t["duration_minutes"],
-          price: t["price"].to_i,
-          co2_kg: t["co2_kg"],
-          summary: t["summary"]
-        )
-      end
-
-      Array(data["itinerary"]).each do |d|
-        day = trip.itinerary_days.create!(
-          day_number: d["day_number"],
-          date: d["date"]
-        )
-
-        Array(d["activities"]).each do |a|
-          day.activities.create!(
-            starts_at: a["starts_at"],
-            title: a["title"],
-            location: a["location"],
-            latitude: a["latitude"],
-            longitude: a["longitude"],
-            details: a["details"]
-          )
-        end
-      end
-    end
-  end
-
-  def ask_llm_for_plan!(trip)
-    with_llm_retries do
-      chat = RubyLLM.chat
-      response =
-        chat
-          .with_instructions(instructions(trip))
-          .ask(user_prompt(trip))
-
-      response.content.to_s
-    end
-  end
-
-  def with_llm_retries(max_attempts: 4, base_sleep: 1.0)
-    attempt = 0
-
-    begin
-      attempt += 1
-      yield
-    rescue RubyLLM::RateLimitError, RubyLLM::ServiceUnavailableError, RubyLLM::ServerError, Faraday::TimeoutError, Faraday::ConnectionFailed => e
-      raise if attempt >= max_attempts
-
-      sleep_for = (base_sleep * (2**(attempt - 1))) + rand * 0.25
-      Rails.logger.warn("[TripsController] LLM retry #{attempt}/#{max_attempts} after #{e.class}: sleeping #{sleep_for.round(2)}s")
-      sleep(sleep_for)
-      retry
-    end
-  end
-
-  def extract_json(text)
-    start = text.index("{")
-    finish = text.rindex("}")
-    return text if start.nil? || finish.nil?
-    text[start..finish]
   end
 end

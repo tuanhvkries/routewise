@@ -22,13 +22,13 @@
                       id: "update-further-preferences-form",
                       data: {
                         controller: "loading",
-                        action: "turbo:submit-start->loading#start turbo:submit-end->loading#stop"
+                        action: "turbo:submit-start->loading#start"
                       } do |f| %>
 
           <%= f.text_area :further_preferences,
                           rows: 3,
                           class: "rw-input rw-input--full",
-                          placeholder: "e.g. local food, vegan, museums" %>
+                          placeholder: "e.g. local food spots, vegan options, nightlife, kid-friendly places…" %>
         <% end %>
       </div>
 
@@ -144,3 +144,70 @@
     <% end %>
   </div>
 </div>
+
+<% if @trip.status == "generating" %>
+  <!-- Mount your existing Stimulus loading controller -->
+  <div id="rw-loading-hook" data-controller="loading"></div>
+
+  <script>
+    function startOverlayAndPoll() {
+      // --- Start overlay via calling the controller method directly ---
+      const hook = document.getElementById("rw-loading-hook");
+      if (hook) {
+        const app = window.Stimulus;
+        if (app) {
+          const controller = app.getControllerForElementAndIdentifier(hook, "loading");
+          if (controller && typeof controller.start === "function") controller.start();
+        }
+      }
+
+      // --- Poll trip status and reload when ready ---
+      const statusUrl = "<%= status_trip_path(@trip) %>";
+
+      let attempts = 0;
+      const maxAttempts = 240;
+
+      async function poll() {
+        attempts += 1;
+
+        try {
+          const resp = await fetch(statusUrl, {
+            headers: { "Accept": "application/json" },
+            credentials: "same-origin"
+          });
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+          const data = await resp.json();
+
+          if (data.status === "ready") {
+            window.location.reload();
+            return;
+          }
+
+          if (data.status === "failed") {
+            alert("Trip generation failed:\n\n" + (data.generation_error || "Please try again."));
+            return;
+          }
+
+          if (attempts >= maxAttempts) {
+            alert("This is taking longer than expected. You can refresh or check back in My Trips.");
+            return;
+          }
+
+          setTimeout(poll, 1000);
+        } catch (e) {
+          if (attempts >= maxAttempts) {
+            alert("Unable to check trip status. Please refresh.");
+            return;
+          }
+          setTimeout(poll, 1500);
+        }
+      }
+
+      poll();
+    }
+
+    document.addEventListener("turbo:load", startOverlayAndPoll);
+    document.addEventListener("DOMContentLoaded", startOverlayAndPoll);
+  </script>
+<% end %>
