@@ -10,19 +10,15 @@ class UnsplashService
       client_id: ENV["UNSPLASH_ACCESS_KEY"]
     }
 
-    uri = URI("https://api.unsplash.com/search/photos")
-    uri.query = URI.encode_www_form(params)
+    conn = Faraday.new(url: "https://api.unsplash.com") do |f|
+      f.request :url_encoded
+      f.response :json
+    end
 
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    response = conn.get("/search/photos", params)
 
-    request = Net::HTTP::Get.new(uri)
-    response = http.request(request)
-
-    if response.is_a?(Net::HTTPSuccess)
-      data = JSON.parse(response.body)
-      data.dig("results", 0, "urls", "regular")
+    if response.success?
+      response.body.dig("results", 0, "urls", "regular")
     end
   rescue StandardError => e
     Rails.logger.error("UnsplashService error: #{e.message}")
