@@ -7,7 +7,7 @@
         <div class="rw-trip-card">
           <%= link_to trip_path(trip), class: "rw-trip-card-link" do %>
             <div class="rw-trip-image">
-              <%= image_tag trip.image_url.presence || "https://loremflickr.com/800/500/#{CGI.escape(trip.city.to_s)},city",
+              <%= image_tag trip.image_url.presence || "trips/placeholder.jpg",
                 alt: trip.city,
                 class: "rw-trip-img" %>
             </div>
@@ -28,7 +28,7 @@
                           trip_path(trip),
                           method: :delete,
                           form: { data: { turbo_confirm: "Are you sure?" } },
-                          class: "rw-trip-btn rw-trip-btn--ghost rw-trip-btn--danger" %>
+                          class: "rw-trip-btn rw-trip-btn--ghost" %>
           </div>
         </div>
       <% end %>
