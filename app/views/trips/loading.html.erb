@@ -1,3 +1,64 @@
+<% if @trip.status == "generating" %>
+  <div
+    id="rw-loading-hook"
+    data-controller="loading"
+    data-action="turbo:load->loading#start"
+  ></div>
+
+  <script>
+    function pollTripAndRefresh() {
+      const statusUrl = "<%= status_trip_path(@trip) %>";
+      const showUrl   = "<%= trip_path(@trip) %>";
+
+      let attempts = 0;
+      const maxAttempts = 240;
+
+      async function poll() {
+        attempts += 1;
+
+        try {
+          const resp = await fetch(statusUrl, {
+            headers: { "Accept": "application/json" },
+            credentials: "same-origin"
+          });
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+          const data = await resp.json();
+
+          if (data.status === "ready") {
+            // Full navigation ensures the generating block is gone
+            window.location.replace(showUrl);
+            return;
+          }
+
+          if (data.status === "failed") {
+            alert("Trip generation failed:\n\n" + (data.generation_error || "Please try again."));
+            return;
+          }
+
+          if (attempts >= maxAttempts) {
+            alert("This is taking longer than expected. You can refresh or check back in My Trips.");
+            return;
+          }
+
+          setTimeout(poll, 1000);
+        } catch (e) {
+          if (attempts >= maxAttempts) {
+            alert("Unable to check trip status. Please refresh.");
+            return;
+          }
+          setTimeout(poll, 1500);
+        }
+      }
+
+      poll();
+    }
+
+    document.addEventListener("turbo:load", pollTripAndRefresh);
+    document.addEventListener("DOMContentLoaded", pollTripAndRefresh);
+  </script>
+<% end %>
+
 <div class="rw-container">
   <div class="rw-loading">
     <div>
@@ -11,3 +72,54 @@
     </div>
   </div>
 </div>
+
+<script>
+  function startTripPolling() {
+    const statusUrl = "<%= status_trip_path(@trip) %>";
+    const showUrl   = "<%= trip_path(@trip) %>";
+
+    let attempts = 0;
+    const maxAttempts = 240;
+
+    async function poll() {
+      attempts += 1;
+
+      try {
+        const resp = await fetch(statusUrl, {
+          headers: { "Accept": "application/json" },
+          credentials: "same-origin"
+        });
+        const data = await resp.json();
+
+        if (data.status === "ready") {
+          window.location.replace(showUrl);
+          return;
+        }
+
+        if (data.status === "failed") {
+          alert("Trip generation failed:\n\n" + (data.generation_error || "Please try again."));
+          return;
+        }
+
+        if (attempts >= maxAttempts) {
+          alert("This is taking longer than expected. Please refresh or check back in My Trips.");
+          return;
+        }
+
+        setTimeout(poll, 1000);
+      } catch (e) {
+        if (attempts >= maxAttempts) {
+          alert("Unable to check trip status. Please refresh the page.");
+          return;
+        }
+        setTimeout(poll, 1500);
+      }
+    }
+
+    poll();
+  }
+
+  // Turbo-safe: runs on normal load AND Turbo navigation
+  document.addEventListener("turbo:load", startTripPolling);
+  document.addEventListener("DOMContentLoaded", startTripPolling);
+</script>

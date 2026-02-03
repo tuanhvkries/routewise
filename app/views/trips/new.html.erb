@@ -5,7 +5,7 @@
                   class: "rw-form",
                   data: {
                     controller: "loading",
-                    action: "turbo:submit-start->loading#start turbo:submit-end->loading#stop"
+                    action: "turbo:submit-start->loading#start"
                   } do |f| %>
 
     <% if @trip.errors.any? %>
