@@ -1,7 +1,13 @@
 <div class="rw-trips-new">
   <h1 class="rw-title">Adjust your trip</h1>
 
-  <%= form_with model: @trip, class: "rw-form", data: { turbo: false, controller: "loading", action: "submit->loading#submit" } do |f| %>
+  <%= form_with model: @trip,
+                class: "rw-form",
+                data: {
+                  controller: "loading",
+                  action: "turbo:submit-start->loading#start"
+                } do |f| %>
+
     <% if @trip.errors.any? %>
       <div class="rw-errors">
         <ul>
@@ -28,8 +34,15 @@
         <div class="rw-field" data-controller="date-range">
           <span class="rw-label">Travel Dates</span>
           <div class="rw-row">
-            <%= f.date_field :start_date, class: "rw-input", min: Date.today, data: { date_range_target: "start", action: "change->date-range#updateEndMin" } %>
-            <%= f.date_field :end_date, class: "rw-input", min: Date.today, data: { date_range_target: "end", action: "change->date-range#updateEndMin" } %>
+            <%= f.date_field :start_date,
+                  class: "rw-input",
+                  min: Date.today,
+                  data: { date_range_target: "start", action: "change->date-range#updateEndMin" } %>
+
+            <%= f.date_field :end_date,
+                  class: "rw-input",
+                  min: Date.today,
+                  data: { date_range_target: "end", action: "change->date-range#updateEndMin" } %>
           </div>
           <span class="rw-field-error" data-date-range-target="error"></span>
         </div>
@@ -48,6 +61,7 @@
           <button type="submit" class="rw-btn rw-btn--primary">
             <i class="fa-solid fa-wand-magic-sparkles"></i> Get your itineraries
           </button>
+
           <%= link_to trip_path(@trip), class: "rw-btn rw-btn--secondary" do %>
             <i class="fa-solid fa-circle-xmark"></i> Cancel
           <% end %>
@@ -60,6 +74,9 @@
           <span class="rw-label">Preferences</span>
 
           <div class="rw-checks">
+            <%# Important: allows user to uncheck all preferences %>
+            <%= hidden_field_tag "trip[preference_ids][]", "" %>
+
             <% @preferences.each do |pref| %>
               <label class="rw-check">
                 <%= check_box_tag "trip[preference_ids][]",
@@ -75,7 +92,7 @@
         <div class="rw-field">
           <span class="rw-label">Further preferences</span>
           <%= f.text_area :further_preferences,
-                placeholder: "put all your further preferences here",
+                placeholder: "e.g. local food spots, vegan options, nightlife, kid-friendly places…",
                 rows: 6,
                 class: "rw-textarea" %>
         </div>

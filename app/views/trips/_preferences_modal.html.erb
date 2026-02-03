@@ -4,7 +4,15 @@
   <div class="rw-modal__panel">
     <h3>Adjust Data</h3>
 
-    <%= form_with model: trip, url: trip_path(trip), method: :patch, class: "rw-form", data: { turbo: false, controller: "loading", action: "submit->loading#submit" } do |f| %>
+    <%= form_with model: trip,
+                  url: trip_path(trip),
+                  method: :patch,
+                  class: "rw-form",
+                  data: {
+                    controller: "loading",
+                    action: "turbo:submit-start->loading#start"
+                  } do |f| %>
+
       <% if trip.errors.any? %>
         <div class="rw-errors">
           <ul>
@@ -53,6 +61,9 @@
             <span class="rw-label">Preferences</span>
 
             <div class="rw-checks">
+              <%# Ensures empty array is submitted if user unchecks all %>
+              <%= hidden_field_tag "trip[preference_ids][]", "" %>
+
               <% all_preferences.each do |pref| %>
                 <label class="rw-check">
                   <%= check_box_tag "trip[preference_ids][]",
@@ -68,7 +79,7 @@
           <div class="rw-field">
             <span class="rw-label">Further preferences</span>
             <%= f.text_area :further_preferences,
-                  placeholder: "put all your further preferences here",
+                  placeholder: "e.g. local food spots, vegan options, nightlife, kid-friendly places…",
                   rows: 6,
                   class: "rw-textarea" %>
           </div>
@@ -76,8 +87,14 @@
       </div>
 
       <div class="rw-actions">
-        <button type="button" class="rw-btn rw-btn--secondary" data-action="click->modal#close">Cancel</button>
-        <%= f.submit "Submit", class: "rw-btn rw-btn--primary" %>
+        <button type="button"
+                class="rw-btn rw-btn--secondary"
+                data-action="click->modal#close">
+          Cancel
+        </button>
+
+        <%# IMPORTANT: no click->modal#close here (it can cancel submit) %>
+        <%= f.submit "Get your itineraries", class: "rw-btn rw-btn--primary" %>
       </div>
     <% end %>
   </div>

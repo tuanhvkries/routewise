@@ -3,7 +3,7 @@ class TripsPromptBuilder
     You are a travel planning assistant.
     Create realistic itineraries and transport options.
     Return ONLY valid JSON. No markdown, no code fences, no explanations.
-    Budget and prices must be realistic whole numbers in EUR.
+
   PROMPT
 
   def self.instructions(trip)
@@ -17,15 +17,12 @@ class TripsPromptBuilder
       Create a #{days}-day trip plan and 4 most practical transport options.
 
       HARD RULES (must follow):
-    - Return ONLY valid JSON (no markdown, no code fences, no explanations).
-    - For EACH day, include exactly 4 to 5 activities total.
-    - Lunch and Dinner MUST be included as activities every day.
-      - Lunch starts between 12:00 and 14:00
-      - Dinner starts between 18:00 and 21:00
-      - Title should clearly indicate it's a meal (e.g. "Lunch: ...", "Dinner: ...")
-    - The remaining activities should be realistic and sequenced by time.
-    - Use 24h time format "HH:MM".
-    - Keep each "details" under 25 words.
+    - Realistic transport prices in whole numbers in EUR based on each tranport option.
+    - Each tranport option's duration must be realistic based on the distance between Departure to the Destination and each transport option.
+    - For EACH day, include exactly 4 to 5 realistic activities total.
+    - Lunch between 12:00 and 14:00 and Dinner between 18:00 and 21:00 MUST be included as activities every day.
+    - Activities MUST be sorted by "starts_at" ascending (earliest → latest).
+    - First activity of Day 1 should be Arrival, last activity on the last day should be departure back home.
     - Latitude/longitude must be numbers (use best-guess coordinates for well-known places; otherwise use city center coordinates).
 
       Output JSON EXACTLY like:

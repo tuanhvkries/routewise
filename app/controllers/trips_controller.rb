@@ -55,12 +55,17 @@ class TripsController < ApplicationController
   end
 
   def status
+    expires_now
+    response.headers["Cache-Control"] = "no-store"
+
     render json: {
       status: @trip.status,
       progress: @trip.progress,
-      generation_error: @trip.generation_error
+      generation_error: @trip.generation_error,
+      updated_at: @trip.updated_at.to_i
     }
   end
+
 
   # Used by:
   # - edit/new form (updates preferences + further_preferences)
