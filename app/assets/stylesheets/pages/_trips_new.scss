@@ -56,11 +56,70 @@
   background: #fff;
 }
 
+
 .rw-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+
+// Flatpickr custom styles
+.flatpickr-input.rw-input {
+  width: 100%;
+  cursor: pointer;
+}
+
+.flatpickr-calendar {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.flatpickr-day {
+  border-radius: 6px !important;
+
+  &.selected,
+  &.startRange,
+  &.endRange,
+  &.selected.startRange,
+  &.selected.endRange {
+    background: #19c37d !important;
+    border-color: #19c37d !important;
+    color: #fff !important;
+
+    &:hover {
+      background: #15a366 !important;
+      border-color: #15a366 !important;
+    }
+  }
+
+  &.inRange {
+    background: rgba(25, 195, 125, 0.2) !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &:hover {
+    background: rgba(25, 195, 125, 0.15) !important;
+    border-color: transparent !important;
+  }
+
+  &.today {
+    border-color: #19c37d !important;
+
+    &:hover {
+      background: rgba(25, 195, 125, 0.15) !important;
+    }
+  }
+}
+
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+  &:hover svg {
+    fill: #19c37d !important;
+  }
+}
+
 
 .rw-checks {
   display: grid;
