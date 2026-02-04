@@ -42,14 +42,30 @@
           <%= f.hidden_field :end_date, data: { date_range_target: "endDate" } %>
         </div>
 
-        <div class="rw-field">
-          <%= f.label :budget, "Budget:", class: "rw-label" %>
-          <%= f.number_field :budget, step: 1, placeholder: "2000", class: "rw-input" %>
+        <div class="rw-field" data-controller="slider" data-slider-min-value="100" data-slider-max-value="10000" data-slider-step-value="100" data-slider-value-value="<%= @trip.budget || 2000 %>" data-slider-show-value-value="true">
+          <label class="rw-label">
+            Budget: €<span data-slider-target="value" class="rw-slider-value"><%= (@trip.budget || 2000).to_i.to_fs(:delimited) %></span>
+          </label>
+          <%= f.range_field :budget,
+                min: 100,
+                max: 10000,
+                step: 100,
+                value: @trip.budget || 2000,
+                class: "rw-slider",
+                data: { slider_target: "input", action: "input->slider#updateValue" } %>
         </div>
 
-        <div class="rw-field">
-          <%= f.label :people, "People:", class: "rw-label" %>
-          <%= f.select :people, (1..10), {}, class: "rw-select" %>
+        <div class="rw-field" data-controller="slider" data-slider-min-value="1" data-slider-max-value="10" data-slider-step-value="1" data-slider-value-value="<%= @trip.people || 2 %>" data-slider-show-value-value="true">
+          <label class="rw-label">
+            People: <span data-slider-target="value" class="rw-slider-value"><%= @trip.people || 2 %></span>
+          </label>
+          <%= f.range_field :people,
+                min: 1,
+                max: 10,
+                step: 1,
+                value: @trip.people || 2,
+                class: "rw-slider",
+                data: { slider_target: "input", action: "input->slider#updateValue" } %>
         </div>
       </div>
 
