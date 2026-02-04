@@ -16,7 +16,13 @@
         <li><strong>From:</strong> <%= @trip.departure %></li>
         <li><strong>Dates:</strong> <%= @trip.start_date %> → <%= @trip.end_date %></li>
         <li><strong>People:</strong> <%= @trip.people %></li>
-        <li><strong>Preferences:</strong> <%= @trip.preferences.pluck(:name).join(", ").presence || "—" %></li>
+        <li>
+          <strong>Preferences:</strong>
+          <%= @trip.preferences
+                .map { |p| "#{preference_emoji(p.name)} #{p.name}" }
+                .join(", ")
+          %>
+        </li>
       </ul>
 
       <div class="rw-space-top">
