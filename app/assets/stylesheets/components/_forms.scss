@@ -1,0 +1,16 @@
+.rw-slider {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.rw-label {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.rw-actions--form {
+  margin-top: 50px;   // 👈 space ABOVE buttons (from People slider)
+  display: flex;
+  flex-direction: column;
+  gap: 16px;          // 👈 space BETWEEN buttons
+}
