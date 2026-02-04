@@ -1,0 +1,33 @@
+<div class="auth-page">
+  <div class="auth-card">
+
+    <!-- Logo (mockup-style header) -->
+    <div class="auth-logo">
+      <%= image_tag "logo.png", alt: "RouteWise" %>
+    </div>
+
+    <div class="auth-card__header">
+      <h1 class="auth-title">Welcome back</h1>
+      <p class="auth-subtitle">Log in to continue RouteWise</p>
+    </div>
+
+    <div class="auth-form">
+      <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <%= f.input :email, autofocus: true, input_html: { autocomplete: "email" } %>
+        <%= f.input :password, input_html: { autocomplete: "current-password" } %>
+
+        <% if devise_mapping.rememberable? %>
+          <%= f.input :remember_me, as: :boolean %>
+        <% end %>
+
+        <div class="auth-actions">
+          <%= f.button :submit, "Log in", class: "btn btn-mint w-100" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="auth-links">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

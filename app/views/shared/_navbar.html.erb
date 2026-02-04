@@ -19,7 +19,7 @@
             <i class="fa-solid fa-route"></i> Plan a trip
           <% end %>
 
-          <!-- CALENDAR -->
+          <!-- CALENDAR DROPDOWN -->
           <div class="rw-nav-calendar">
             <button
               id="rw-calendar-toggle"
@@ -51,21 +51,27 @@
               <% end %>
             </div>
           </div>
-          <!-- /CALENDAR -->
+          <!-- /CALENDAR DROPDOWN -->
 
+          <!-- USER AVATAR DROPDOWN -->
           <div class="rw-avatar">
-            <button class="rw-avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false">
+            <button
+              class="rw-avatar-btn"
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded="false">
               <span class="rw-avatar-icon">👤</span>
             </button>
 
             <div class="rw-avatar-menu" role="menu" aria-label="User menu">
               <%= button_to destroy_user_session_path,
                             method: :delete,
-                            class: "rw-nav-primary rw-nav-button" do %>
+                            class: "rw-nav-button rw-nav-outline" do %>
                 <i class="fa-solid fa-arrow-right-from-bracket"></i> Log out
               <% end %>
             </div>
           </div>
+          <!-- /USER AVATAR DROPDOWN -->
         </div>
       <% else %>
         <div class="rw-nav-actions">
