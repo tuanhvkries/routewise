@@ -2,37 +2,41 @@
   <h1 class="rw-my-trips-title">My trips</h1>
 
   <% if @trips.any? %>
-    <div class="rw-trip-index-grid">
-      <% @trips.each do |trip| %>
-        <div class="rw-trip-card">
-          <%= link_to trip_path(trip), class: "rw-trip-card-link" do %>
-            <div class="rw-trip-image">
-              <%= image_tag trip.image_url.presence || "trips/placeholder.jpg",
-                alt: trip.city,
-                class: "rw-trip-img" %>
+    <% @trips_by_month.sort_by { |month, _| month }.each do |month, trips| %>
+      <h2 class="rw-trip-month-heading"><%= month.strftime("%b %y") %></h2>
+
+      <div class="rw-trip-index-grid">
+        <% trips.sort_by(&:start_date).each do |trip| %>
+          <div class="rw-trip-card">
+            <%= link_to trip_path(trip), class: "rw-trip-card-link" do %>
+              <div class="rw-trip-image">
+                <%= image_tag trip.image_url.presence || "trips/placeholder.jpg",
+                  alt: trip.city,
+                  class: "rw-trip-img" %>
+              </div>
+
+              <div class="rw-trip-body">
+                <h3 class="rw-trip-destination"><%= trip.city.presence || "Destination" %></h3>
+
+                <p class="rw-trip-dates">
+                  <%= trip.start_date %> → <%= trip.end_date %>
+                </p>
+              </div>
+            <% end %>
+
+            <div class="rw-trip-actions">
+              <%= link_to "Details", trip_path(trip), class: "rw-trip-btn rw-trip-btn--ghost" %>
+
+              <%= button_to "Delete",
+                            trip_path(trip),
+                            method: :delete,
+                            form: { data: { turbo_confirm: "Are you sure?" } },
+                            class: "rw-trip-btn rw-trip-btn--ghost" %>
             </div>
-
-            <div class="rw-trip-body">
-              <h3 class="rw-trip-destination"><%= trip.city.presence || "Destination" %></h3>
-
-              <p class="rw-trip-dates">
-                <%= trip.start_date %> → <%= trip.end_date %>
-              </p>
-            </div>
-          <% end %>
-
-          <div class="rw-trip-actions">
-            <%= link_to "Details", trip_path(trip), class: "rw-trip-btn rw-trip-btn--ghost" %>
-
-            <%= button_to "Delete",
-                          trip_path(trip),
-                          method: :delete,
-                          form: { data: { turbo_confirm: "Are you sure?" } },
-                          class: "rw-trip-btn rw-trip-btn--ghost" %>
           </div>
-        </div>
-      <% end %>
-    </div>
+        <% end %>
+      </div>
+    <% end %>
 
     <div class="rw-my-trips-cta">
       <%= link_to new_trip_path, class: "rw-btn rw-btn--primary" do %>
