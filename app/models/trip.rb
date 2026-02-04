@@ -20,6 +20,12 @@ class Trip < ApplicationRecord
 
   after_initialize :set_default_status, if: :new_record?
 
+  scope :upcoming, -> {
+  where("start_date >= ?", Date.current)
+    .order(:start_date)
+}
+
+
   private
 
   def set_default_status
