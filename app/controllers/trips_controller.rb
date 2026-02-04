@@ -19,6 +19,7 @@ class TripsController < ApplicationController
     @trip.progress = 0
     @trip.generation_error = nil
     @trip.image_url = UnsplashService.city_image(@trip.city)
+    @trip.itinerary_image_url = UnsplashService.city_image(@trip.city, style: :skyline)
 
     if @trip.save
       TripGenerationJob.perform_later(@trip.id)

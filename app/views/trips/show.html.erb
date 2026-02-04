@@ -1,5 +1,11 @@
 <div class="rw-container rw-trip-show">
-  <h1 class="rw-trip-title">Your trip to “<%= @trip.city %>”</h1>
+  <h1 class="rw-trip-title">Your trip to "<%= @trip.city %>"</h1>
+
+  <div class="rw-hero-trip-image">
+    <%= image_tag @trip.image_url.presence || "trips/placeholder.jpg",
+        alt: @trip.city,
+        class: "rw-hero-trip-img" %>
+  </div>
 
   <div class="rw-trip-grid">
     <!-- SUMMARY -->
@@ -53,7 +59,15 @@
         <div class="rw-transport-list">
           <% @transport_options.each do |t| %>
             <div class="rw-transport-item">
-              <div class="rw-transport-mode"><%= t.mode.to_s.upcase %></div>
+              <div class="rw-transport-mode">
+                <%= t.mode.to_s.upcase %>
+
+                <% if t == @greenest_transport %>
+                  <span class="rw-badge rw-badge--green">
+                    <i class="fa-solid fa-earth-europe"></i> Best for the planet
+                  </span>
+                <% end %>
+            </div>
 
               <div class="rw-muted">
                 <%# Display duration in hours: e.g., 6h18 instead of 378 min %>
@@ -86,6 +100,12 @@
   </div>
 
   <h2 class="rw-section-title">Your itinerary in "<%= @trip.city %>"</h2>
+
+  <div class="rw-hero-trip-image">
+    <%= image_tag @trip.itinerary_image_url.presence || "trips/placeholder.jpg",
+        alt: @trip.city,
+        class: "rw-hero-trip-img" %>
+  </div>
 
   <% if @days.any? %>
     <div class="rw-days">

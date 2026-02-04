@@ -1,9 +1,16 @@
 class UnsplashService
-  def self.city_image(city)
+  STYLES = {
+    landmark: "famous landmark tourism",
+    skyline: "city skyline panorama"
+  }.freeze
+
+  def self.city_image(city, style: :landmark)
     return nil if city.blank?
 
+    query_suffix = STYLES[style] || STYLES[:landmark]
+
     params = {
-      query: "#{city} famous landmark tourism",
+      query: "#{city} #{query_suffix}",
       per_page: 1,
       orientation: "landscape",
       content_filter: "high",
