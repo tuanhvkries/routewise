@@ -5,7 +5,8 @@ class TripsController < ApplicationController
   ]
 
   def index
-    @trips = current_user.trips.order(created_at: :desc)
+    @trips = current_user.trips.order(:start_date)
+    @trips_by_month = @trips.group_by { |t| t.start_date.beginning_of_month }
   end
 
   def new
