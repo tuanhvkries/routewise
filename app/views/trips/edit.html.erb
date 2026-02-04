@@ -32,19 +32,14 @@
         </div>
 
         <div class="rw-field" data-controller="date-range">
-          <span class="rw-label">Travel Dates</span>
-          <div class="rw-row">
-            <%= f.date_field :start_date,
-                  class: "rw-input",
-                  min: Date.today,
-                  data: { date_range_target: "start", action: "change->date-range#updateEndMin" } %>
-
-            <%= f.date_field :end_date,
-                  class: "rw-input",
-                  min: Date.today,
-                  data: { date_range_target: "end", action: "change->date-range#updateEndMin" } %>
-          </div>
-          <span class="rw-field-error" data-date-range-target="error"></span>
+          <%= f.label :start_date, "Travel Dates", class: "rw-label" %>
+          <input type="text"
+                 class="rw-input"
+                 placeholder="Select date range"
+                 data-date-range-target="picker"
+                 readonly>
+          <%= f.hidden_field :start_date, data: { date_range_target: "startDate" } %>
+          <%= f.hidden_field :end_date, data: { date_range_target: "endDate" } %>
         </div>
 
         <div class="rw-field">
