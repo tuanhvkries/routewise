@@ -1,6 +1,11 @@
 <div class="pdf-header">
-  <h1>Your trip to "<%= @trip.city %>"</h1>
-  <p><%= @trip.start_date %> → <%= @trip.end_date %> &bull; <%= @trip.people %> people</p>
+  <h1>Your trip to <%= @trip.city %></h1>
+  <p>
+    <%= @trip.start_date.strftime("%-d %b %y") %>
+    →
+    <%= @trip.end_date.strftime("%-d %b %y") %>
+    &bull; <%= @trip.people %> people
+  </p>
   <%= wicked_pdf_image_tag "logo.png", class: "pdf-logo" %>
 </div>
 
@@ -19,7 +24,10 @@
 <div class="pdf-card">
   <h2>Itinerary</h2>
   <% @trip.itinerary_days.order(:day_number).each do |day| %>
-    <div class="pdf-day-header">Day <%= day.day_number %> &mdash; <%= day.date %></div>
+    <div class="pdf-day-header">
+      Day <%= day.day_number %> &mdash;
+      <%= day.date.is_a?(Date) ? day.date.strftime("%-d %b %y") : Date.parse(day.date).strftime("%-d %b %y") %>
+    </div>
 
     <% day.activities.order(:starts_at).each do |a| %>
       <div class="pdf-activity">
