@@ -248,8 +248,9 @@
 
 .rw-card-actions {
   margin-top: 14px;
-  display: flex;           /* Aktiviert Flexbox */
-  justify-content: center; /* Zentriert den Inhalt horizontal */
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 /* button_to forms inline */
