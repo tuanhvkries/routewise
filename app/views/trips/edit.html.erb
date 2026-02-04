@@ -27,7 +27,7 @@
         </div>
 
         <div class="rw-field">
-          <%= f.label :departure, "Departure:", class: "rw-label" %>
+          <%= f.label :departure, "Departure", class: "rw-label" %>
           <%= f.text_field :departure, placeholder: "City", class: "rw-input" %>
         </div>
 
@@ -68,7 +68,7 @@
                 data: { slider_target: "input", action: "input->slider#updateValue" } %>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="rw-actions rw-actions--form">
           <button type="submit" class="rw-btn rw-btn--primary">
             <i class="fa-solid fa-wand-magic-sparkles"></i> Update your trip
           </button>
