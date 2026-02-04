@@ -24,7 +24,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_04_135800) do
     t.datetime "updated_at", null: false
     t.float "latitude"
     t.float "longitude"
-    t.integer "position"
     t.index ["itinerary_day_id"], name: "index_activities_on_itinerary_day_id"
   end
 
