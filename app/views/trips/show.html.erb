@@ -1,5 +1,5 @@
 <div class="rw-container rw-trip-show">
-  <h1 class="rw-trip-title">Your trip to "<%= @trip.city %>"</h1>
+  <h1 class="rw-trip-title">Your trip to <%= @trip.city %></h1>
 
   <div class="rw-hero-trip-image">
     <%= image_tag @trip.image_url.presence || "trips/placeholder.jpg",
@@ -105,7 +105,7 @@
     </section>
   </div>
 
-  <h2 class="rw-section-title">Your itinerary in "<%= @trip.city %>"</h2>
+  <h2 class="rw-section-title">Your itinerary in <%= @trip.city %></h2>
 
   <div class="rw-hero-trip-image">
     <%= image_tag @trip.itinerary_image_url.presence || "trips/placeholder.jpg",
