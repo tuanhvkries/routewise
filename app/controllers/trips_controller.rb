@@ -19,6 +19,7 @@ class TripsController < ApplicationController
     @trip.progress = 0
     @trip.generation_error = nil
     @trip.image_url = UnsplashService.city_image(@trip.city)
+    @trip.itinerary_image_url = UnsplashService.city_image(@trip.city, style: :skyline)
 
     if @trip.save
       TripGenerationJob.perform_later(@trip.id)
@@ -47,6 +48,7 @@ class TripsController < ApplicationController
   def show
     @days = @trip.itinerary_days.includes(:activities).order(:day_number)
     @transport_options = @trip.transport_options
+    @greenest_transport = @transport_options.min_by(&:co2_kg)
     @all_preferences = Preference.order(:name)
   end
 
