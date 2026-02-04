@@ -14,7 +14,7 @@
 
       <ul class="rw-list">
         <li><strong>From:</strong> <%= @trip.departure %></li>
-        <li><strong>Dates:</strong> <%= @trip.start_date %> → <%= @trip.end_date %></li>
+        <li><strong>Dates:</strong> <%= @trip.start_date.strftime("%-d %b %y") %> - <%= @trip.end_date.strftime("%-d %b %y") %></li>
         <li><strong>People:</strong> <%= @trip.people %></li>
         <li>
           <strong>Preferences:</strong>
@@ -119,7 +119,9 @@
         <section class="rw-card">
           <div class="rw-day-header">
             <span>Day <%= day.day_number %></span>
-            <span><%= day.date %></span>
+            <span>
+              <%= day.date.is_a?(Date) ? day.date.strftime("%-d %b %y") : Date.parse(day.date).strftime("%-d %b %y") %>
+            </span>
           </div>
 
           <% if day.activities.any? %>
