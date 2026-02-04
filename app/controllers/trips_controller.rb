@@ -47,6 +47,7 @@ class TripsController < ApplicationController
   def show
     @days = @trip.itinerary_days.includes(:activities).order(:day_number)
     @transport_options = @trip.transport_options
+    @greenest_transport = @transport_options.min_by(&:co2_kg)
     @all_preferences = Preference.order(:name)
   end
 

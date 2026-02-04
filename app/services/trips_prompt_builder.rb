@@ -3,6 +3,7 @@ class TripsPromptBuilder
     You are a travel planning assistant.
     Create realistic itineraries and transport options.
     Return ONLY valid JSON. No markdown, no code fences, no explanations.
+    Never use placeholders like _LOOKUP, TBD, N/A, unknown, or text in numeric fields.
     All numbers must be valid JSON numbers (no trailing decimal point like 52.). Use integers or one decimal like 52.0.
 
   PROMPT
