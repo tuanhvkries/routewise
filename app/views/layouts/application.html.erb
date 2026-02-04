@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RouteWise</title>
+    <title>RouteWise - Plan your trip in the most effective and environmentally friendly way</title>
+    <meta name="description" content="RouteWise helps you plan personalized travel itineraries with AI-powered recommendations.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon -->
+    <%= favicon_link_tag "favicon.png", type: "image/png" %>
+    <%= favicon_link_tag "favicon.ico", rel: "shortcut icon" %>
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="RouteWise - Plan Your Perfect Trip">
+    <meta property="og:description" content="RouteWise helps you plan personalized travel itineraries with AI-powered recommendations.">
+    <meta property="og:image" content="<%= image_url('cover-image.png') %>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="<%= image_url('cover-image.png') %>">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
