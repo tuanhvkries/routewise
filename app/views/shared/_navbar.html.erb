@@ -19,13 +19,49 @@
             <i class="fa-solid fa-route"></i> Plan a trip
           <% end %>
 
+          <!-- CALENDAR -->
+          <div class="rw-nav-calendar">
+            <button
+              id="rw-calendar-toggle"
+              class="rw-nav-calendar-btn"
+              type="button"
+              aria-label="Upcoming trips"
+              aria-expanded="false">
+              <i class="fa-solid fa-calendar-days"></i>
+            </button>
+
+            <div id="rw-calendar-menu" class="rw-nav-calendar-dropdown">
+              <% if @nav_upcoming_trips.present? %>
+                <div class="rw-nav-calendar-title">Upcoming trips</div>
+
+                <% @nav_upcoming_trips.each do |trip| %>
+                  <%= link_to trip_path(trip), class: "rw-nav-calendar-item" do %>
+                    <div class="rw-nav-calendar-city"><%= trip.city %></div>
+                    <div class="rw-nav-calendar-dates">
+                      <%= trip.start_date.strftime("%b %d") %> → <%= trip.end_date.strftime("%b %d") %>
+                    </div>
+                  <% end %>
+                <% end %>
+
+                <div class="rw-nav-calendar-footer">
+                  <%= link_to "View all trips", trips_path, class: "rw-nav-calendar-link" %>
+                </div>
+              <% else %>
+                <div class="rw-nav-calendar-empty">No upcoming trips</div>
+              <% end %>
+            </div>
+          </div>
+          <!-- /CALENDAR -->
+
           <div class="rw-avatar">
             <button class="rw-avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false">
               <span class="rw-avatar-icon">👤</span>
             </button>
 
             <div class="rw-avatar-menu" role="menu" aria-label="User menu">
-              <%= button_to destroy_user_session_path, method: :delete, class: "rw-nav-primary rw-nav-button" do %>
+              <%= button_to destroy_user_session_path,
+                            method: :delete,
+                            class: "rw-nav-primary rw-nav-button" do %>
                 <i class="fa-solid fa-arrow-right-from-bracket"></i> Log out
               <% end %>
             </div>
