@@ -60,13 +60,18 @@
 
           <div class="rw-checks">
             <% @preferences.each do |pref| %>
-              <label class="rw-check">
+              <label class="rw-pref-chip">
                 <%= check_box_tag "trip[preference_ids][]",
                       pref.id,
                       @trip.preference_ids.include?(pref.id),
-                      class: "rw-checkbox" %>
-                <span><%= pref.name %></span>
+                      class: "rw-pref-checkbox" %>
+
+                <span class="rw-pref-chip-content">
+                  <span class="rw-pref-emoji"><%= preference_emoji(pref.name) %></span>
+                  <span><%= pref.name %></span>
+                </span>
               </label>
+
             <% end %>
           </div>
         </div>
