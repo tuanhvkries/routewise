@@ -32,6 +32,7 @@ class TripsPromptBuilder
     - If a mode is geographically impossible (e.g., Train from NY to London), OMIT IT and replace with another feasible option
     - "duration_minutes": Must include check-in/security buffers (e.g., flight time + 2h).
     - "duration_minutes": Must be realistic based on distance and mode - Flight should normally be fastest, next Car, Train and then Bus.
+    - "duration_minutes": Must be conservative, not too optimistic.
     - "price": Realistic total in EUR per person.
     - "co2_kg": Realistic estimate.
 
