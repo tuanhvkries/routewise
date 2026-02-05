@@ -11,20 +11,15 @@ class TripGenerationJob < ApplicationJob
     )
 
     ActiveRecord::Base.transaction do
-      trip.transport_options.destroy_all
+      transport = Array(data["transport_options"])
+      itinerary = Array(data["itinerary"])
+
+      raise "LLM response missing itinerary" if itinerary.empty?
+
+      # Always rebuild itinerary
       trip.itinerary_days.destroy_all
 
-      Array(data["transport_options"]).each do |t|
-        trip.transport_options.create!(
-          mode: t["mode"],
-          duration_minutes: t["duration_minutes"],
-          price: t["price"].to_i,
-          co2_kg: t["co2_kg"],
-          summary: t["summary"]
-        )
-      end
-
-      Array(data["itinerary"]).each do |d|
+      itinerary.each do |d|
         day = trip.itinerary_days.create!(
           day_number: d["day_number"],
           date: d["date"]
@@ -38,6 +33,21 @@ class TripGenerationJob < ApplicationJob
             latitude: a["latitude"],
             longitude: a["longitude"],
             details: a["details"]
+          )
+        end
+      end
+
+      # Only rebuild transport if provided
+      if transport.any?
+        trip.transport_options.destroy_all
+
+        transport.each do |t|
+          trip.transport_options.create!(
+            mode: t["mode"],
+            duration_minutes: Integer(t["duration_minutes"]),
+            price: Integer(t["price"]),     # stricter than .to_i
+            co2_kg: t["co2_kg"],
+            summary: t["summary"]
           )
         end
       end
