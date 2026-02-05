@@ -1,7 +1,7 @@
 # app/services/json_repair.rb
 class JsonRepair
-  def self.repair(json_text, model: "gpt-4.1-mini")
-    RubyLLM.chat(model: model)
+  def self.repair(json_text)
+    RubyLLM.chat
       .with_instructions(<<~INST)
         You fix invalid JSON.
         Return ONLY valid JSON. No extra text.

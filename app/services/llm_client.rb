@@ -12,7 +12,7 @@ class LlmClient
     begin
       JSON.parse(json_text)
     rescue JSON::ParserError
-      fixed = JsonRepair.repair(json_text, model: model)
+      fixed = JsonRepair.repair(json_text)
       JSON.parse(extract_json(fixed))
     end
   end

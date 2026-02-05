@@ -39,11 +39,11 @@ class TripsPromptBuilder
     SECTION 2: ITINERARY RULES
     - **Date Format**: Strictly ISO 8601 ("YYYY-MM-DD").
     - **Structure**:
-      - Day 1 starts with "Arrival" (time depends on chosen transport, assume morning arrival if unspecified).
-      - Final Day ends with "Departure".
-    - **Activities**: 3-5 distinct items per day.
+      - Day 1 starts with "Arrival" (time depends on chosen transport, assume morning 9:00-12:00 if unspecified).
+      - Final Day ends with "Departure" (time depends on chosen transport, assume afternoon 15:00-18:00 if unspecified).
+    - **Activities**: 4-5 distinct items per day.
     - **Meals**:
-      - Schedule Lunch (12:00-14:00) and Dinner (18:00-21:00).
+      - Schedule Lunch (12:00-15:00) and Dinner (18:00-21:00).
       - EXCEPTION: Do not schedule meals if they conflict with Arrival/Departure times on the first/last day.
     - **Geography**: Group activities logically by neighborhood to minimize travel.
     - **Coordinates**: Provide numeric latitude/longitude.
