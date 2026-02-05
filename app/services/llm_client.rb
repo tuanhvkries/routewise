@@ -1,13 +1,20 @@
 class LlmClient
-  def self.ask_json!(instructions:, prompt:, model: "gpt-4o-mini")
+  def self.ask_json!(instructions:, prompt:)
     raw = with_retries do
-      RubyLLM.chat(model: model)
+      RubyLLM.chat
         .with_instructions(instructions)
         .ask(prompt)
         .content.to_s
     end
 
-    JSON.parse(extract_json(raw))
+    json_text = extract_json(raw)
+
+    begin
+      JSON.parse(json_text)
+    rescue JSON::ParserError
+      fixed = JsonRepair.repair(json_text, model: model)
+      JSON.parse(extract_json(fixed))
+    end
   end
 
   def self.with_retries(max_attempts: 4, base_sleep: 1.0)
